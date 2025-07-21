@@ -1,0 +1,17 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "parser": "flow",
+  "prettier/prettier": [
+    "warn",
+    {
+      "singleQuote": true,
+      "trailingComma": "all",
+      "parser": "flow"
+    },
+    {
+      "singleQuote": true,
+      "parser": "flow"
+    }
+  ]
+}
