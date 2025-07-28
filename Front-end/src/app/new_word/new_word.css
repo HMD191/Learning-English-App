@@ -1,0 +1,76 @@
+.newword-container {
+  padding: 20px 40px;
+  background-color: #f1f8fd;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.newword-container h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.newword-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 0 1px #e3eaf1;
+}
+
+.newword-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #555;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #d9d9e3;
+  margin: 10px 0 20px;
+}
+
+.newword-inputs {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.newword-inputs input {
+  width: 100%;
+  padding: 12px;
+  background-color: #f1f4ff;
+  border: 1px solid #d3d3f0;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.label {
+  margin-top: 6px;
+  color: #6f6f6f;
+  font-size: 13px;
+  text-align: center;
+}
+
+.add_word-btn {
+   background-color: #42aaff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
