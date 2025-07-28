@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f8fc;
+  color: #333;
+}
+
+
+/* .app-container {
+  display: flex;
+  height: 100vh;
+} */
+
+.sidebar {
+  width: 170px;
+  background-color: #f1f6fa;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: width 0.3s ease;
+  position: fixed;
+  top: 54.67px; /* chiều cao của navbar */
+  height: calc(100vh - 54.67px); /* toàn bộ chiều cao màn hình */
+  z-index: 40;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  align-items: center;
+}
+
+.sidebar-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.sidebar .icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  color: #3b4a67;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.sidebar .icon:hover,
+.sidebar .icon.active {
+  background-color: #e5eef7;
+  /* font-weight: bold; */
+}
+
+.sidebar.collapsed .icon span {
+  display: none;
+}
+
+/* .content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  color: #0d58ec;
+} */
+
+.navbar {
+  position: sticky;     /* hoặc fixed */
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #f1f6fa;
+  border-bottom: 1px solid #d0e3f0;
+}
+
+.column_sidebar {
+  background-color: #f1f6fa;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.column_content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f1f8fd;
+  padding: 2px;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  height: calc(100vh - 54.67px); 
+}
+
+
+.logo-circle {
+  width: 32px;
+  height: 32px;
+  background-color: #42aaff;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d0e3f0;
+  border-radius: 8px;
+  outline: none;
+}
+
+.menu-btn {
+  background-color: transparent;
+  border: none;
+  color: #515456;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+}
+
+.add-btn {
+  background-color: #42aaff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* .content {
+  padding: 20px;
+} */
