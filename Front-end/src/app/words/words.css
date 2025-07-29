@@ -33,6 +33,7 @@
   padding: 4px 6px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  height: 30px
 }
 
 .actions button {
@@ -40,4 +41,32 @@
   cursor: pointer;
   background: none;
   border: none;
+}
+
+
+.custom-select .rs__control {
+  height: 30px;               /* ✅ đặt chiều cao mong muốn */
+  min-height: 30px;           /* đảm bảo không bị override */
+  
+  border-radius: 6px;
+  padding: 0 8px;             /* thêm padding ngang để đẹp */
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
+
+}
+
+.custom-select .rs__value-container {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;              /* ✅ fill toàn bộ control */
+  font-size: 14px;
+  line-height: 1;
+
+ 
 }
