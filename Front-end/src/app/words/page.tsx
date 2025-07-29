@@ -3,6 +3,15 @@ import React, { useEffect, useState } from "react";
 import "./words.css";
 import axios from "axios";
 import { Pencil, Trash2 } from "lucide-react";
+import Select, { components, MultiValue } from "react-select";
+
+type OptionType = { label: string; value: string };
+const wordTypes: OptionType[]  = [
+  { value: "noun", label: "Noun" },
+  { value: "verb", label: "Verb" },
+  { value: "adj", label: "Adj" },
+  { value: "adv", label: "Adv" },
+];
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -110,19 +119,85 @@ const WordListPage = () => {
               </td>
               <td>
                 {editingIndex === index ? (
-                  <input
-                    value={editedWord?.type || ""}
-                    onChange={(e) =>
-                      setEditedWord({
-                        ...editedWord!,
-                        type: e.target.value,
-                      })
-                    }
-                  />
+                    <div className="input-group">
+                    <Select
+                        isMulti
+                        options={wordTypes}
+                        value={
+                        editedWord?.type
+                            .split(",")
+                            .map((t) => wordTypes.find((opt) => opt.value === t.trim()))
+                            .filter(Boolean) as OptionType[]
+                        }
+                        onChange={(selected: MultiValue<OptionType>) => {
+                        const selectedValues = selected.map((opt) => opt.value).join(", ");
+                        setEditedWord({ ...editedWord!, type: selectedValues });
+                        }}
+                        className="custom-select"
+                        classNamePrefix="rs"
+                        placeholder="Từ loại"
+                        closeMenuOnSelect={false}
+                        hideSelectedOptions={false}
+                        components={{
+                        MultiValue: () => null,
+                        ClearIndicator: () => null,
+                        ValueContainer: ({ children, ...props }) => {
+                            const selected = props.getValue() as OptionType[];
+                            const labels = selected.map((opt) => opt.label).join(", ");
+                            return (
+                            <components.ValueContainer {...props}>
+                                <div style={{ paddingLeft: "10px", fontSize: "14px" }}>
+                                {labels || props.selectProps.placeholder}
+                                </div>
+                            </components.ValueContainer>
+                            );
+                        },
+                        Option: ({ data, isSelected, innerRef, innerProps }) => {
+                            const option = data as OptionType;
+                            return (
+                            <div
+                                ref={innerRef}
+                                {...innerProps}
+                                style={{
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "6px 10px",
+                                gap: 8,
+                                }}
+                            >
+                                <input
+                                type="checkbox"
+                                checked={isSelected}
+                                readOnly
+                                style={{
+                                    width: 16,
+                                    height: 16,
+                                    margin: 0,
+                                    padding: 0,
+                                    verticalAlign: "middle",
+                                }}
+                                />
+                                <label
+                                style={{
+                                    margin: 0,
+                                    padding: 0,
+                                    lineHeight: "1",
+                                }}
+                                >
+                                {option.label}
+                                </label>
+                            </div>
+                            );
+                        },
+                        }}
+                    />
+                    </div>
                 ) : (
-                  word.type
+                    word.type
                 )}
-              </td>
+                </td>
+
+
               <td>
                 {editingIndex === index ? (
                   <input

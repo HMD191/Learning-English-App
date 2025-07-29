@@ -48,13 +48,24 @@
   justify-content: space-between;
 }
 
+.input-group {
+  flex: 1; /* Mỗi ô chiếm 1 phần bằng nhau */
+  display: flex;
+  flex-direction: column;
+}
+
 .newword-inputs input {
   width: 100%;
-  padding: 12px;
+  height: 45px;
+  padding: 0 12px;
   background-color: #f1f4ff;
   border: 1px solid #d3d3f0;
   border-radius: 6px;
   font-size: 14px;
+}
+.newword-inputs input:focus {
+  border: 1px solid #9a9a9a; 
+  outline: none; 
 }
 
 .label {
@@ -64,13 +75,92 @@
   text-align: center;
 }
 
+.done-btn,
 .add_word-btn {
-   background-color: #42aaff;
-  color: white;
-  border: none;
+  background-color: #aecff0;
+  border: 1px solid #8590f4;
+  color: rgb(40, 33, 76);
+  /* border: none; */
   padding: 8px 12px;
-  border-radius: 999px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
 }
+
+.done-btn:hover,
+.add_word-btn:hover {
+  background-color: #d1e9ff;
+  color: #004a99;
+}
+
+/* .react-select__control {
+  background-color: #f1f4ff;
+  border: 1px solid #d3d3f0;
+  border-radius: 6px;
+  padding: 2px;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+.react-select__placeholder {
+  font-size: 14px;
+}
+
+.react-select__single-value {
+  font-size: 10px;
+}
+
+.react-select__multi-value {
+  background-color: #d1e9ff;
+  border-radius: 12px;
+  padding: 3px 6px;
+  font-size: 13px;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+.react-select__multi-value__label {
+  color: #004a99;
+  font-size: 13px;
+}
+
+.react-select__multi-value__remove {
+  color: #004a99;
+  cursor: pointer;
+} */
+
+/* Khung chính (ô hiển thị) */
+.custom-select .rs__control {
+  background-color: #f1f4ff;
+  border: 1px solid #d3d3f0;
+  border-radius: 6px;
+  padding: 0 12px;
+  height: 45px; 
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dropdown menu */
+.custom-select .rs__menu {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 999;
+  font-size: 12px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #d3d3f0;
+}
+
+/* Placeholder */
+
+/* .custom-select > div {
+  background-color: #f1f4ff;
+  border: 1px solid #d3d3f0;
+  border-radius: 6px;
+  padding: 1px;
+  font-size: 14px;
+  box-shadow: none;
+} */
