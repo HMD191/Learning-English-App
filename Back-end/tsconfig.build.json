@@ -10,6 +10,7 @@
       "@database/*": ["src/database/*"],
       "@dtos/*": ["src/dtos/*"],
       "@modules/*": ["src/modules/*"],
+      "@constants/*": ["src/constants/*"],
     },
   }
 }

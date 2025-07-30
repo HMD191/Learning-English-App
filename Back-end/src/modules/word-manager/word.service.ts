@@ -7,7 +7,7 @@ import {
   returnStringDto,
   returnWordDto,
   returnWordsDto,
-} from '@src/dtos/return-message.dto';
+} from '@dtos/return-message.dto';
 
 Injectable();
 export class WordService {
@@ -75,6 +75,7 @@ export class WordService {
   }
 
   async updateWord(wordDto: UpdateWordDto): Promise<returnStringDto> {
+    console.log('Updating word:', wordDto);
     wordDto.engMeaning =
       wordDto.engMeaning.charAt(0).toUpperCase() +
       wordDto.engMeaning.slice(1).toLowerCase();
@@ -82,12 +83,22 @@ export class WordService {
     const existedWord = await this.wordRepository.findOne({
       where: { engMeaning: wordDto.engMeaning },
     });
+    const existedNewWord = await this.wordRepository.findOne({
+      where: { engMeaning: wordDto.newEngMeaning },
+    });
 
     if (!existedWord) {
       console.warn(`Word "${wordDto.engMeaning}" does not exist.`);
       return {
         statusCode: 404,
         message: `Word "${wordDto.engMeaning}" does not exist.`,
+      };
+    }
+    if (existedNewWord) {
+      console.warn(`Word "${wordDto.newEngMeaning}" already exists.`);
+      return {
+        statusCode: 409,
+        message: `Word "${wordDto.newEngMeaning}" already exists.`,
       };
     }
 

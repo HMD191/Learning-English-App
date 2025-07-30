@@ -1,21 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Words } from './entities/word.entity';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
+import { Categories } from './entities/category.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        DB_HOST: Joi.string().required(),
-        DB_PORT: Joi.number().required().default(5432),
-        DB_USERNAME: Joi.string().required(),
-        DB_PASSWORD: Joi.string().required(),
-      }),
-    }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
@@ -25,7 +16,7 @@ import * as Joi from 'joi';
         password: config.get<string>('DB_PASSWORD'),
         database: 'learning_english_db',
 
-        entities: [Words],
+        entities: [Words, Categories],
         synchronize: true,
       }),
     }),

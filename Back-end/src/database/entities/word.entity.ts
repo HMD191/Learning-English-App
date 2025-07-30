@@ -1,16 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-export enum WordKind {
-  Noun = 'noun',
-  Verb = 'verb',
-  Adj = 'adj',
-  Adv = 'adv',
-}
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { WordKind } from '@constants/constants';
+import { Categories } from './category.entity';
 
 @Entity()
 export class Words {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
+
+  @ManyToOne(() => Categories, (category) => category.words, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
+  category: Categories;
 
   @Column({
     name: 'eng_meaning',

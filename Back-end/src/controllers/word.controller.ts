@@ -7,26 +7,17 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { AppService } from '../app.service';
 import { WordDto, UpdateWordDto } from '@dtos/word-manager.dto';
 import { WordService } from '@modules/word-manager/word.service';
 import {
   returnStringDto,
   returnWordDto,
   returnWordsDto,
-} from '@src/dtos/return-message.dto';
+} from '@dtos/return-message.dto';
 
 @Controller()
-export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly wordService: WordService,
-  ) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+export class WordController {
+  constructor(private readonly wordService: WordService) {}
 
   @Post('add-word')
   async addWord(@Body() wordDto: WordDto): Promise<returnStringDto> {
