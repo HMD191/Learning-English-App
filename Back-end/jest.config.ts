@@ -1,6 +1,6 @@
 import type { Config } from 'jest';
 import { compilerOptions } from './tsconfig.json';
-import { pathsToModuleNameMapper } from 'ts-jest'; // nếu dùng ts-jest < v29
+import { pathsToModuleNameMapper } from 'ts-jest';
 
 const config: Config = {
   clearMocks: true,

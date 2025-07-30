@@ -1,3 +1,4 @@
+import { QuestionAnswerDto } from './question-answer.dto';
 import { WordDto } from './word-manager.dto';
 
 class returnStringDto {
@@ -14,4 +15,15 @@ class returnWordDto {
   statusCode: number;
   word?: WordDto;
 }
-export { returnStringDto, returnWordsDto, returnWordDto };
+
+class returnQuestionAnswerDto {
+  statusCode: number;
+  questionAnswer?: QuestionAnswerDto;
+}
+
+export {
+  returnStringDto,
+  returnWordsDto,
+  returnWordDto,
+  returnQuestionAnswerDto,
+};

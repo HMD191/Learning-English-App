@@ -24,7 +24,8 @@
       "@controllers/*": ["src/controllers/*"],
       "@database/*": ["src/database/*"],
       "@dtos/*": ["src/dtos/*"],
-      "@modules/*": ["src/modules/*"]
+      "@modules/*": ["src/modules/*"],
+      "@constants/*": ["src/constants/*"]
     }
   }
 }

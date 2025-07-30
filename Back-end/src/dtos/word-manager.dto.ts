@@ -6,7 +6,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { WordKind } from '@database/entities/word.entity';
+import { WordKind } from '@constants/constants';
 
 class WordDto {
   @IsString({ message: 'English word must be a string' })

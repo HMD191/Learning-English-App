@@ -1,11 +1,10 @@
 import { UpdateWordDto, WordDto } from '@dtos/word-manager.dto';
 import { WordService } from './word.service';
 import { Any, Repository } from 'typeorm';
-import { WordKind, Words } from '@database/entities/word.entity';
+import { Words } from '@database/entities/word.entity';
+import { WordKind } from '@constants/constants';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { any } from 'joi';
-import { get } from 'http';
 
 const mockWordRepository = {
   findOne: jest.fn(),
@@ -122,6 +121,37 @@ describe('WordService', () => {
         message: `Word "${updateWordDto.engMeaning}" does not exist.`,
       });
     });
+    it('should not update word if new word already exists', async () => {
+      const existingWord = {
+        id: 1,
+        engMeaning: 'test',
+        vnMeaning: 'kiểm tra',
+        wordKind: [WordKind.Noun, WordKind.Verb],
+        lastUpdate: new Date(),
+      };
+      const existingNewWord = {
+        id: 2,
+        engMeaning: 'test updated',
+        vnMeaning: 'kiểm tra update',
+        wordKind: [WordKind.Adj],
+        lastUpdate: new Date(),
+      };
+      const updateWordDto: UpdateWordDto = {
+        engMeaning: 'test',
+        newEngMeaning: 'test updated',
+        vnMeaning: 'kiểm tra update',
+        wordKind: [WordKind.Adj],
+      };
+
+      mockWordRepository.findOne.mockResolvedValueOnce(existingWord);
+      mockWordRepository.findOne.mockResolvedValueOnce(existingNewWord); // Simulate existing new word
+
+      const result = await wordService.updateWord(updateWordDto);
+      expect(result).toStrictEqual({
+        statusCode: 409,
+        message: `Word "${updateWordDto.newEngMeaning}" already exists.`,
+      });
+    });
     it('should update an existing word', async () => {
       const existingWord = {
         id: 1,
@@ -137,7 +167,8 @@ describe('WordService', () => {
         wordKind: [WordKind.Adj],
       };
 
-      mockWordRepository.findOne.mockResolvedValue(existingWord);
+      mockWordRepository.findOne.mockResolvedValueOnce(existingWord);
+      mockWordRepository.findOne.mockResolvedValueOnce(null); // Simulate no existing new word
       mockWordRepository.update.mockResolvedValue({ affected: 1 });
 
       const result = await wordService.updateWord(updateWordDto);
