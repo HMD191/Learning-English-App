@@ -5,6 +5,8 @@ import { Words } from '@database/entities/word.entity';
 import { WordKind } from '@constants/constants';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { get } from 'http';
+import { Categories } from '@src/database/entities/category.entity';
 
 const mockWordRepository = {
   findOne: jest.fn(),
@@ -22,6 +24,10 @@ const mockWordRepository = {
   getMany: jest.fn(),
 };
 
+const mockCategoryRepository = {
+  findOne: jest.fn(),
+};
+
 describe('WordService', () => {
   let wordService: WordService;
   let repo: jest.Mocked<Repository<Words>>;
@@ -32,6 +38,10 @@ describe('WordService', () => {
         {
           provide: getRepositoryToken(Words),
           useValue: mockWordRepository,
+        },
+        {
+          provide: getRepositoryToken(Categories),
+          useValue: mockCategoryRepository,
         },
         WordService,
       ],
@@ -55,6 +65,7 @@ describe('WordService', () => {
       engMeaning: 'test',
       vnMeaning: 'kiểm tra',
       wordKind: [WordKind.Noun, WordKind.Verb],
+      category: null,
     };
     const wordFromDb = {
       ...wordDto,
@@ -75,33 +86,21 @@ describe('WordService', () => {
       });
     });
 
-    it('should update an existing word', async () => {
+    it('should do nothing if word existed', async () => {
       const wordDto: WordDto = {
         engMeaning: 'test',
         vnMeaning: 'kiểm tra update',
         wordKind: [WordKind.Adj],
+        category: null,
       };
 
       mockWordRepository.findOne.mockResolvedValue(wordFromDb);
-      mockWordRepository.update.mockResolvedValue({ affected: 1 });
 
       const result = await wordService.addWord(wordDto);
       expect(result).toStrictEqual({
-        statusCode: 200,
-        message: `Word "${wordDto.engMeaning}" already exists. Updated word kind successfully.`,
+        statusCode: 409,
+        message: `Word "${wordDto.engMeaning}" already exists.`,
       });
-      expect(mockWordRepository.update).toHaveBeenCalledWith(
-        wordFromDb.id,
-        expect.objectContaining({
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          wordKind: expect.arrayContaining([
-            WordKind.Adj,
-            WordKind.Noun,
-            WordKind.Verb,
-          ]),
-          lastUpdate: expect.any(Date),
-        }),
-      );
     });
   });
 
@@ -112,6 +111,7 @@ describe('WordService', () => {
         newEngMeaning: 'test updated',
         vnMeaning: 'kiểm tra update',
         wordKind: [WordKind.Adj],
+        category: null,
       };
       mockWordRepository.findOne.mockResolvedValue(null);
 
@@ -141,6 +141,7 @@ describe('WordService', () => {
         newEngMeaning: 'test updated',
         vnMeaning: 'kiểm tra update',
         wordKind: [WordKind.Adj],
+        category: null,
       };
 
       mockWordRepository.findOne.mockResolvedValueOnce(existingWord);
@@ -165,11 +166,13 @@ describe('WordService', () => {
         newEngMeaning: 'test updated',
         vnMeaning: 'kiểm tra update',
         wordKind: [WordKind.Adj],
+        category: null,
       };
 
       mockWordRepository.findOne.mockResolvedValueOnce(existingWord);
       mockWordRepository.findOne.mockResolvedValueOnce(null); // Simulate no existing new word
       mockWordRepository.update.mockResolvedValue({ affected: 1 });
+      mockCategoryRepository.findOne.mockResolvedValue(null); // Simulate no category
 
       const result = await wordService.updateWord(updateWordDto);
       expect(result).toStrictEqual({
@@ -177,13 +180,14 @@ describe('WordService', () => {
         message: `Updated word "${updateWordDto.engMeaning} --> ${updateWordDto.newEngMeaning}" successfully.`,
       });
       expect(mockWordRepository.update).toHaveBeenCalledWith(
-        existingWord.id,
-        expect.objectContaining({
+        { engMeaning: updateWordDto.engMeaning },
+        {
           engMeaning: updateWordDto.newEngMeaning,
           vnMeaning: updateWordDto.vnMeaning,
-          wordKind: expect.arrayContaining([WordKind.Adj]),
+          wordKind: updateWordDto.wordKind,
           lastUpdate: expect.any(Date),
-        }),
+          category: null, // Ensure category is set to null if not provided
+        },
       );
     });
   });
@@ -197,6 +201,7 @@ describe('WordService', () => {
           vnMeaning: 'kiểm tra',
           wordKind: [WordKind.Noun],
           lastUpdate: new Date(),
+          category: null,
         },
         {
           id: 2,
@@ -204,6 +209,7 @@ describe('WordService', () => {
           vnMeaning: 'ví dụ',
           wordKind: [WordKind.Verb],
           lastUpdate: new Date(),
+          category: null,
         },
       ];
       mockWordRepository.find.mockResolvedValue(words);
@@ -214,10 +220,14 @@ describe('WordService', () => {
           engMeaning: word.engMeaning,
           vnMeaning: word.vnMeaning,
           wordKind: word.wordKind,
+          category: null,
         })),
         statusCode: 200,
       });
-      expect(mockWordRepository.find).toHaveBeenCalledWith({ take: 100 });
+      expect(mockWordRepository.find).toHaveBeenCalledWith({
+        take: 100,
+        relations: ['category'],
+      });
     });
   });
 
@@ -230,6 +240,7 @@ describe('WordService', () => {
         vnMeaning: 'kiểm tra',
         wordKind: [WordKind.Noun],
         lastUpdate: new Date(),
+        category: null,
       };
       mockWordRepository.findOne.mockResolvedValue(word);
 
@@ -238,6 +249,7 @@ describe('WordService', () => {
         word: {
           engMeaning: word.engMeaning,
           vnMeaning: word.vnMeaning,
+          category: null,
           wordKind: word.wordKind,
         },
         statusCode: 200,
@@ -265,12 +277,13 @@ describe('WordService', () => {
           vnMeaning: 'kiểm tra',
           wordKind: [WordKind.Noun],
           lastUpdate: new Date(),
+          category: null,
         },
       ];
 
       const mockQueryBuilder: any = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
-        addSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
         orWhere: jest.fn().mockReturnThis(),
         orderBy: jest.fn().mockReturnThis(),
@@ -285,6 +298,7 @@ describe('WordService', () => {
           engMeaning: word.engMeaning,
           vnMeaning: word.vnMeaning,
           wordKind: word.wordKind,
+          category: null,
         })),
         statusCode: 200,
       });

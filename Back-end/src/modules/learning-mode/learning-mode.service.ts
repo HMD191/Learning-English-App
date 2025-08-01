@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Words } from '@database/entities/word.entity';
 import { Repository } from 'typeorm';
-import { returnQuestionAnswerDto } from '@dtos/return-message.dto';
+import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { Difficulty } from '@constants/constants';
 
 Injectable();
@@ -14,7 +14,7 @@ export class LearningModeService {
 
   async getFillInTheBlankQuestion(
     difficulty: Difficulty = Difficulty.Hard,
-  ): Promise<returnQuestionAnswerDto> {
+  ): Promise<ReturnQuestionAnswerDto> {
     const word = await this.wordRepository
       .createQueryBuilder('words')
       .orderBy('RANDOM()')
@@ -37,7 +37,7 @@ export class LearningModeService {
   async getQuestionAndAnswerFromModel(
     word: Words,
     difficulty: Difficulty,
-  ): Promise<returnQuestionAnswerDto> {
+  ): Promise<ReturnQuestionAnswerDto> {
     // const wordKind =
     //   word.wordKind[Math.floor(Math.random() * word.wordKind.length)];
     // The sentence should be clear and suitable for an English learning application.
@@ -117,7 +117,7 @@ export class LearningModeService {
     };
   }
 
-  async get1Eng4VnWords(): Promise<returnQuestionAnswerDto> {
+  async get1Eng4VnWords(): Promise<ReturnQuestionAnswerDto> {
     const words = await this.wordRepository
       .createQueryBuilder('words')
       .orderBy('RANDOM()')
@@ -150,7 +150,7 @@ export class LearningModeService {
     };
   }
 
-  async get1Vn4EngWords(): Promise<returnQuestionAnswerDto> {
+  async get1Vn4EngWords(): Promise<ReturnQuestionAnswerDto> {
     const words = await this.wordRepository
       .createQueryBuilder('words')
       .orderBy('RANDOM()')
@@ -185,7 +185,7 @@ export class LearningModeService {
     };
   }
 
-  async completeWord(): Promise<returnQuestionAnswerDto> {
+  async completeWord(): Promise<ReturnQuestionAnswerDto> {
     const word = await this.wordRepository
       .createQueryBuilder('words')
       .orderBy('RANDOM()')

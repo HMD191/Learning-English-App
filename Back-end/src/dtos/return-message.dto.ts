@@ -1,29 +1,35 @@
 import { QuestionAnswerDto } from './question-answer.dto';
 import { WordDto } from './word-manager.dto';
 
-class returnStringDto {
+class ReturnStringDto {
   statusCode: number;
   message?: string;
 }
 
-class returnWordsDto {
+class ReturnWordsDto {
   statusCode: number;
   words?: WordDto[];
 }
 
-class returnWordDto {
+class ReturnWordDto {
   statusCode: number;
   word?: WordDto;
 }
 
-class returnQuestionAnswerDto {
+class ReturnQuestionAnswerDto {
   statusCode: number;
   questionAnswer?: QuestionAnswerDto;
 }
 
+class ReturnCategoryDto {
+  statusCode: number;
+  categories?: string[];
+}
+
 export {
-  returnStringDto,
-  returnWordsDto,
-  returnWordDto,
-  returnQuestionAnswerDto,
+  ReturnStringDto,
+  ReturnWordsDto,
+  ReturnWordDto,
+  ReturnQuestionAnswerDto,
+  ReturnCategoryDto,
 };

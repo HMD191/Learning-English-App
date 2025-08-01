@@ -1,26 +1,33 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Words } from '@database/entities/word.entity';
-import { WordDto, UpdateWordDto } from '@dtos/word-manager.dto';
+import { WordDto, UpdateWordDto, FilterWordsDto } from '@dtos/word-manager.dto';
 import { Repository } from 'typeorm';
 import {
-  returnStringDto,
-  returnWordDto,
-  returnWordsDto,
+  ReturnStringDto,
+  ReturnWordDto,
+  ReturnWordsDto,
 } from '@dtos/return-message.dto';
+import { Categories } from '@database/entities/category.entity';
+import { capitalizeFirstLetter } from '@src/common/helper';
+import e from 'express';
 
 Injectable();
 export class WordService {
   constructor(
     @InjectRepository(Words)
     private wordRepository: Repository<Words>,
+    @InjectRepository(Categories)
+    private categoryRepository: Repository<Categories>,
   ) {}
 
-  async addWord(wordDto: WordDto): Promise<returnStringDto> {
+  async addWord(wordDto: WordDto): Promise<ReturnStringDto> {
     wordDto.wordKind.sort();
-    wordDto.engMeaning =
-      wordDto.engMeaning.charAt(0).toUpperCase() +
-      wordDto.engMeaning.slice(1).toLowerCase();
+    wordDto.engMeaning = capitalizeFirstLetter(wordDto.engMeaning);
+
+    if (wordDto.category) {
+      wordDto.category = capitalizeFirstLetter(wordDto.category);
+    }
 
     // check if the word already exists
     const existedWord = await this.wordRepository.findOne({
@@ -29,35 +36,33 @@ export class WordService {
 
     if (existedWord) {
       console.log(`Word "${wordDto.engMeaning}" already exists.`);
-
-      const oldWordKind = existedWord.wordKind;
-      wordDto.wordKind = [
-        ...new Set([...oldWordKind, ...wordDto.wordKind]),
-      ].sort();
-
-      try {
-        await this.wordRepository.update(existedWord.id, {
-          wordKind: wordDto.wordKind,
-          lastUpdate: new Date(),
-        });
-      } catch (error) {
-        console.error('Error updating word kind:', error);
-        throw new InternalServerErrorException('Database update failed');
-      }
-
-      console.log(
-        `Updated word kind for "${wordDto.engMeaning}":`,
-        wordDto.wordKind,
-      );
       return {
-        statusCode: 200,
-        message: `Word "${wordDto.engMeaning}" already exists. Updated word kind successfully.`,
+        statusCode: 409,
+        message: `Word "${wordDto.engMeaning}" already exists.`,
       };
     }
 
     try {
-      const newWord = this.wordRepository.create(wordDto);
-      console.log(newWord);
+      const wordToInsert: Partial<Words> = {
+        engMeaning: wordDto.engMeaning,
+        vnMeaning: wordDto.vnMeaning,
+        wordKind: wordDto.wordKind,
+      };
+
+      if (wordDto.category) {
+        const categoryDb = await this.categoryRepository.findOne({
+          where: { categoryName: wordDto.category },
+        });
+        if (categoryDb) {
+          wordToInsert.category = categoryDb;
+        } else {
+          console.warn(`Category "${wordDto.category}" does not exist.`);
+          console.warn('Category will be set to null.');
+        }
+      }
+
+      const newWord = this.wordRepository.create(wordToInsert);
+      console.log('newWord:', newWord);
       const result = await this.wordRepository.save(newWord);
       if (!result) {
         throw new InternalServerErrorException('Database save failed');
@@ -74,11 +79,12 @@ export class WordService {
     }
   }
 
-  async updateWord(wordDto: UpdateWordDto): Promise<returnStringDto> {
+  async updateWord(wordDto: UpdateWordDto): Promise<ReturnStringDto> {
     console.log('Updating word:', wordDto);
-    wordDto.engMeaning =
-      wordDto.engMeaning.charAt(0).toUpperCase() +
-      wordDto.engMeaning.slice(1).toLowerCase();
+    wordDto.engMeaning = capitalizeFirstLetter(wordDto.engMeaning);
+    wordDto.vnMeaning = capitalizeFirstLetter(wordDto.vnMeaning);
+    wordDto.newEngMeaning = capitalizeFirstLetter(wordDto.newEngMeaning);
+    wordDto.wordKind.sort();
 
     const existedWord = await this.wordRepository.findOne({
       where: { engMeaning: wordDto.engMeaning },
@@ -94,7 +100,7 @@ export class WordService {
         message: `Word "${wordDto.engMeaning}" does not exist.`,
       };
     }
-    if (existedNewWord) {
+    if (existedNewWord && existedNewWord.engMeaning !== wordDto.engMeaning) {
       console.warn(`Word "${wordDto.newEngMeaning}" already exists.`);
       return {
         statusCode: 409,
@@ -102,14 +108,35 @@ export class WordService {
       };
     }
 
-    wordDto.wordKind.sort();
     try {
-      await this.wordRepository.update(existedWord.id, {
+      const wordToUpdate: Partial<Words> = {
         engMeaning: wordDto.newEngMeaning,
         vnMeaning: wordDto.vnMeaning,
         wordKind: wordDto.wordKind,
         lastUpdate: new Date(),
-      });
+      };
+
+      if (wordDto.category) {
+        wordDto.category = capitalizeFirstLetter(wordDto.category);
+        const categoryDb = await this.categoryRepository.findOne({
+          where: { categoryName: wordDto.category },
+        });
+
+        if (categoryDb) {
+          wordToUpdate.category = categoryDb;
+        } else {
+          console.warn(`Category "${wordDto.category}" does not exist.`);
+          console.warn('Category will be set to null.');
+          wordToUpdate.category = null;
+        }
+      } else {
+        wordToUpdate.category = null;
+      }
+
+      await this.wordRepository.update(
+        { engMeaning: wordDto.engMeaning },
+        wordToUpdate,
+      );
 
       console.log(
         `Updated word "${wordDto.engMeaning} --> ${wordDto.newEngMeaning}" successfully.`,
@@ -124,13 +151,18 @@ export class WordService {
     }
   }
 
-  async getAllWords(): Promise<returnWordsDto> {
+  async getAllWords(): Promise<ReturnWordsDto> {
+    console.log('Fetching all words from the database...');
     try {
-      const wordsDb = await this.wordRepository.find({ take: 100 });
+      const wordsDb = await this.wordRepository.find({
+        take: 100,
+        relations: ['category'],
+      });
       const words = wordsDb.map((word) => ({
         engMeaning: word.engMeaning,
         vnMeaning: word.vnMeaning,
         wordKind: word.wordKind,
+        category: word.category ? word.category.categoryName : null,
       }));
 
       if (words.length === 0) {
@@ -147,13 +179,14 @@ export class WordService {
     }
   }
 
-  async getWordByEngMeaning(engMeaning: string): Promise<returnWordDto> {
-    engMeaning =
-      engMeaning.charAt(0).toUpperCase() + engMeaning.slice(1).toLowerCase();
+  async getWordByEngMeaning(engMeaning: string): Promise<ReturnWordDto> {
+    engMeaning = capitalizeFirstLetter(engMeaning);
+
     try {
       console.log(`Fetching word with English meaning: ${engMeaning}`);
       const wordDb = await this.wordRepository.findOne({
         where: { engMeaning: engMeaning },
+        relations: ['category'],
       });
 
       if (!wordDb) {
@@ -163,10 +196,13 @@ export class WordService {
         };
       }
 
+      console.log(wordDb);
+
       const word = {
         engMeaning: wordDb.engMeaning,
         vnMeaning: wordDb.vnMeaning,
         wordKind: wordDb.wordKind,
+        category: wordDb.category ? wordDb.category.categoryName : null,
       };
 
       return {
@@ -179,10 +215,11 @@ export class WordService {
     }
   }
 
-  async fuzzyFindWords(searchTerm: string): Promise<returnWordsDto> {
+  async fuzzyFindWords(searchTerm: string): Promise<ReturnWordsDto> {
     try {
       const wordsDb = await this.wordRepository
         .createQueryBuilder('words')
+        .leftJoinAndSelect('words.category', 'category')
         .limit(100)
         .where('similarity(words.engMeaning, :term) > 0.3')
         .orWhere('similarity(words.vnMeaning, :term) > 0.3')
@@ -192,12 +229,12 @@ export class WordService {
         )
         .setParameter('term', searchTerm)
         .getMany();
-      // .getRawMany(); // Use getRawMany if you want raw results
 
       const words = wordsDb.map((word) => ({
         engMeaning: word.engMeaning,
         vnMeaning: word.vnMeaning,
         wordKind: word.wordKind,
+        category: word.category ? word.category.categoryName : null,
       }));
 
       console.log(`Found ${words.length} words matching "${searchTerm}"`);
@@ -211,7 +248,52 @@ export class WordService {
     }
   }
 
-  async deleteWordByEngMeaning(engMeaning: string): Promise<returnStringDto> {
+  async filterWords(filter: FilterWordsDto): Promise<ReturnWordsDto> {
+    const { categories, wordKind } = filter;
+
+    const queryBuilder = this.wordRepository
+      .createQueryBuilder('words')
+      .leftJoinAndSelect('words.category', 'category');
+
+    if (categories && categories.length > 0) {
+      queryBuilder.leftJoinAndSelect('words.category', 'category');
+      queryBuilder.where('category.categoryName IN (:...categories)', {
+        categories: categories.map(
+          (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
+        ),
+      });
+    }
+
+    if (wordKind && wordKind.length > 0) {
+      queryBuilder.andWhere(
+        'words.wordKind && ARRAY[:...wordKind]::varchar[]',
+        {
+          wordKind: wordKind.map((w) => w.toLowerCase()),
+        },
+      );
+    }
+
+    try {
+      const wordsDb = await queryBuilder.getMany();
+      const words = wordsDb.map((word) => ({
+        engMeaning: word.engMeaning,
+        vnMeaning: word.vnMeaning,
+        wordKind: word.wordKind,
+        category: word.category ? word.category.categoryName : null,
+      }));
+
+      console.log(`Found ${words.length} words matching the filter.`);
+      return {
+        statusCode: 200,
+        words: words,
+      };
+    } catch (error) {
+      console.error('Error filtering words:', error);
+      throw new InternalServerErrorException('Database filter failed');
+    }
+  }
+
+  async deleteWordByEngMeaning(engMeaning: string): Promise<ReturnStringDto> {
     engMeaning =
       engMeaning.charAt(0).toUpperCase() + engMeaning.slice(1).toLowerCase();
     try {

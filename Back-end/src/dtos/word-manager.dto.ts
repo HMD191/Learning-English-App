@@ -26,6 +26,8 @@ class WordDto {
     message: 'Word kind must be one of the following: noun, verb, adj, adv',
   })
   wordKind: WordKind[];
+
+  category: string | null | undefined;
 }
 
 class UpdateWordDto extends WordDto {
@@ -35,4 +37,19 @@ class UpdateWordDto extends WordDto {
   newEngMeaning: string;
 }
 
-export { WordDto, UpdateWordDto };
+class FilterWordsDto {
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true, message: 'Categories must be an array of strings' })
+  categories?: string[];
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsIn(Object.values(WordKind), {
+    each: true,
+    message: 'Word kind must be one of the following: noun, verb, adj, adv',
+  })
+  wordKind?: WordKind[];
+}
+
+export { WordDto, UpdateWordDto, FilterWordsDto };
