@@ -18,7 +18,7 @@ export class Words {
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
-  category: Categories;
+  category: Categories | null | undefined;
 
   @Column({
     name: 'eng_meaning',
