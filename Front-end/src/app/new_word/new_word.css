@@ -68,6 +68,8 @@
   outline: none; 
 }
 
+
+
 .label {
   margin-top: 6px;
   color: #6f6f6f;
@@ -94,49 +96,12 @@
   color: #004a99;
 }
 
-/* .react-select__control {
-  background-color: #f1f4ff;
-  border: 1px solid #d3d3f0;
-  border-radius: 6px;
-  padding: 2px;
-  font-size: 14px;
-  box-shadow: none;
-}
-
-.react-select__placeholder {
-  font-size: 14px;
-}
-
-.react-select__single-value {
-  font-size: 10px;
-}
-
-.react-select__multi-value {
-  background-color: #d1e9ff;
-  border-radius: 12px;
-  padding: 3px 6px;
-  font-size: 13px;
-  font-weight: 500;
-  max-width: 100%;
-}
-
-.react-select__multi-value__label {
-  color: #004a99;
-  font-size: 13px;
-}
-
-.react-select__multi-value__remove {
-  color: #004a99;
-  cursor: pointer;
-} */
 
 /* Khung chính (ô hiển thị) */
 .custom-select .rs__control {
   background-color: #f1f4ff;
   border: 1px solid #d3d3f0;
   border-radius: 6px;
-  padding: 0 12px;
-  height: 45px; 
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -144,23 +109,43 @@
   text-overflow: ellipsis;
 }
 
-/* Dropdown menu */
-.custom-select .rs__menu {
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 999;
-  font-size: 12px;
-  border-radius: 6px;
-  box-shadow: 0 0 0 1px #d3d3f0;
+.custom-select .rs__value-container {
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  height: 45px;
+  font-size: 14px;
 }
 
-/* Placeholder */
-
-/* .custom-select > div {
+.custom-select-1 .rs-1__control {
   background-color: #f1f4ff;
   border: 1px solid #d3d3f0;
   border-radius: 6px;
-  padding: 1px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-select-1 .rs-1__value-container {
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  height: 45px;
   font-size: 14px;
-  box-shadow: none;
-} */
+}
+
+.custom-select-1 .rs-1__value-container-is-multi {
+ padding: 0 12px;
+  display: flex;
+  align-items: center;
+  height: 45px;
+  font-size: 14px;
+}
+
+
+
+
+
+
