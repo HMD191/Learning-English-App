@@ -4,15 +4,54 @@ import { Words } from '@database/entities/word.entity';
 import { Repository } from 'typeorm';
 import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { Difficulty } from '@constants/constants';
+import { GoogleGenAI } from '@google/genai';
 
 Injectable();
 export class LearningModeService {
+  private ai: GoogleGenAI;
   constructor(
     @InjectRepository(Words)
     private wordRepository: Repository<Words>,
-  ) {}
+  ) {
+    this.ai = new GoogleGenAI({
+      apiKey: process.env.GOOGLE_GENAI_API_KEY,
+    });
+  }
+
+  getPromptMeaningChoice(word: Words, difficulty: Difficulty): string {
+    return `Generate a sentence with a blank ("___" present for blank) and 4 random answer options, where the true answer to fill in the blank must be exactly the word "${word.engMeaning.toLowerCase()}". 
+    The sentence should be suitable for ${difficulty} level.
+    Generate an explanation in vietnamese for correct answer.
+    Follow the format below strictly:
+    Sentence: <sentence here>
+    a: <option 1>
+    b: <option 2>
+    c: <option 3>
+    d: <option 4>
+    RightAnswer: <correct option letter> (e.g., a, b, c, or d)
+    Explanation: <explanation for the correct answer in vietnamese>
+    `;
+  }
+
+  getPromptWordKindChoice(word: Words, difficulty: Difficulty): string {
+    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb based on the word "${word.engMeaning.toLowerCase()}" (include original word).
+    The options must be different from each other in spelling and must not be labeled with their word kinds.
+    If distractors cannot be generated enough from the word "${word.engMeaning.toLowerCase()}", use unrelated words that fit the required parts of speech.
+    The sentence should be suitable for ${difficulty} level. 
+    Generate an explanation in vietnamese for correct answer.
+    Follow the format below strictly:
+    Sentence: <sentence here>
+    a: <option 1>
+    b: <option 2>
+    c: <option 3>
+    d: <option 4>
+    RightAnswer: <correct option letter> (e.g., a, b, c, or d)
+    Explanation: <explanation for the correct answer in vietnamese>
+    `;
+  }
 
   async getFillInTheBlankQuestion(
+    promptOption: 'meaning' | 'wordKind',
     difficulty: Difficulty = Difficulty.Hard,
   ): Promise<ReturnQuestionAnswerDto> {
     const word = await this.wordRepository
@@ -25,8 +64,17 @@ export class LearningModeService {
       throw new Error('No words available for learning mode.');
     }
 
+    let prompt: string;
+    if (promptOption === 'meaning') {
+      console.log('Using meaning choice prompt');
+      prompt = this.getPromptMeaningChoice(word, difficulty);
+    } else {
+      console.log('Using word kind choice prompt');
+      prompt = this.getPromptWordKindChoice(word, difficulty);
+    }
+
     try {
-      const result = await this.getQuestionAndAnswerFromModel(word, difficulty);
+      const result = await this.getQuestionAndAnswerFromModel(prompt);
       return result;
     } catch (error) {
       console.error('Error getting question and answer from model:', error);
@@ -35,48 +83,22 @@ export class LearningModeService {
   }
 
   async getQuestionAndAnswerFromModel(
-    word: Words,
-    difficulty: Difficulty,
+    prompt: string,
   ): Promise<ReturnQuestionAnswerDto> {
-    // const wordKind =
-    //   word.wordKind[Math.floor(Math.random() * word.wordKind.length)];
-    // The sentence should be clear and suitable for an English learning application.
-    // Given the word: "${word.engMeaning}".
-    const prompt = `Generate a sentence with a blank ("___"present for blank) and 4 random answer options, where the true answer to fill in the blank is "${word.engMeaning.toLowerCase()}". The sentence should be suitable for ${difficulty} level.
-    Follow the format below strictly:
-    Sentence: <sentence here>
-    a: <option 1>
-    b: <option 2>
-    c: <option 3>
-    d: <option 4>
-    RightAnswer: <correct option> (ex: a, b, c, or d)
-    `;
-    const data = {
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      model: 'google/gemma-2-2b-it:nebius',
-    };
-
     console.log('Requesting AI model for data');
 
-    const response = await fetch(
-      'https://router.huggingface.co/v1/chat/completions',
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.HF_TOKEN}`,
-          'Content-Type': 'application/json',
+    const response = await this.ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0, // Disables thinking
         },
-        method: 'POST',
-        body: JSON.stringify(data),
       },
-    );
+    });
+    console.log(response.text);
 
-    const result = await response.json();
-    const content: string = result.choices[0].message.content;
+    const content: string = response.text ?? '';
 
     let sentence: string = '';
     const answerOptions: string[] = [];
@@ -94,9 +116,12 @@ export class LearningModeService {
       }
     });
 
+    const explanation = content.split('Explanation:')[1]?.trim();
+
     console.log('sentence:', sentence);
     console.log('Answer Options:', answerOptions);
     console.log('Right Answer:', rightAnswer);
+    console.log('Explanation:', explanation);
 
     if (!sentence.length || !answerOptions.length || !rightAnswer.length) {
       // return {

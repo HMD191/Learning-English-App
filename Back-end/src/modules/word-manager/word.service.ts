@@ -10,7 +10,6 @@ import {
 } from '@dtos/return-message.dto';
 import { Categories } from '@database/entities/category.entity';
 import { capitalizeFirstLetter } from '@src/common/helper';
-import e from 'express';
 
 Injectable();
 export class WordService {
@@ -156,6 +155,7 @@ export class WordService {
     try {
       const wordsDb = await this.wordRepository.find({
         take: 100,
+        order: { engMeaning: 'ASC' },
         relations: ['category'],
       });
       const words = wordsDb.map((word) => ({
