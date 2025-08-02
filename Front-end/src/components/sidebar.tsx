@@ -1,29 +1,36 @@
+"use client";
 import Link from "next/link";
-import { FaHome, FaFolderOpen, FaBell, FaPlus } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import { FaHome, FaFolderOpen, FaBell, FaPlus,  FaBookOpen } from "react-icons/fa";
 
 interface SidebarProps {
   collapsed: boolean;
 }
 
 export default function Sidebar({ collapsed }: SidebarProps) {
+  const pathname = usePathname();
+
   return (
     <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div className="sidebar-icons">
 
-        <div className="icon active">
+        <Link href="/" className={`icon ${pathname === "/" ? "active" : ""}`}>
           <FaHome /> {!collapsed && <span>Home</span>}
-        </div>
+        </Link>
 
-        <Link href="/words" className="icon">
+        <Link href="/words" className={`icon ${pathname === "/words" ? "active" : ""}`}>
           <FaFolderOpen /> {!collapsed && <span>Your Library</span>}
         </Link>
 
-        <div className="icon">
+        <Link href="/notifications" className={`icon ${pathname === "/notifications" ? "active" : ""}`}>
           <FaBell /> {!collapsed && <span>Notifications</span>}
-        </div>
+        </Link>
 
-        {/* 🟩 Link tới trang /new_word */}
-        <Link href="/new_word" className="icon">
+        <Link href="/vocabulary" className={`icon ${pathname === "/vocabulary" ? "active" : ""}`}>
+          <FaBookOpen /> {!collapsed && <span>Vocabulary</span>}
+        </Link>
+
+        <Link href="/new_word" className={`icon ${pathname === "/new_word" ? "active" : ""}`}>
           <FaPlus /> {!collapsed && <span>New Word</span>}
         </Link>
         

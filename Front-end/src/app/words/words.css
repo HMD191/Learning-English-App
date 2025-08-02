@@ -1,9 +1,8 @@
 .wordlist-container {
-  padding: 20px;
-  max-width: 1000px;
-  margin: auto;
-  background-color: #f5f9ff;
-  border-radius: 10px;
+ padding: 20px 40px;
+  background-color: #f1f8fd;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .wordlist-container h2 {
@@ -32,8 +31,8 @@
   width: 90%;
   padding: 4px 6px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  height: 30px
+  border: 1px solid #bab8b8;
+  height: 36px
 }
 
 .actions button {
@@ -44,29 +43,29 @@
 }
 
 
-.custom-select .rs__control {
-  height: 30px;               /* ✅ đặt chiều cao mong muốn */
-  min-height: 30px;           /* đảm bảo không bị override */
+.custom-select-2 .rs-2__control {      
   
-  border-radius: 6px;
-  padding: 0 8px;             /* thêm padding ngang để đẹp */
+  border-radius: 4px;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 120px;
 
 }
-
-.custom-select .rs__value-container {
-  padding: 0;
+/* Căn giữa toàn bộ nội dung bên trong Select */
+.custom-select-2 .rs-2__value-container {
+ padding: 4 6px;
   display: flex;
   align-items: center;
-  height: 100%;              /* ✅ fill toàn bộ control */
+  height: 30px;
   font-size: 14px;
-  line-height: 1;
-
- 
 }
+
+
+
+
+
+
+
+

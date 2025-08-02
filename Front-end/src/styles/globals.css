@@ -6,39 +6,42 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f2f8fc;
+  background: linear-gradient(to top, #cce3ff, #fdfbfe, #fdfbfe, #fdfbfe); /* 3 màu */
   color: #333;
+  height: 100vh;
 }
 
-
-/* .app-container {
-  display: flex;
-  height: 100vh;
-} */
+a {
+  text-decoration: none;
+}
 
 .sidebar {
-  width: 170px;
-  background-color: #f1f6fa;
-  padding: 20px 10px;
+  width: 160px;
+  left: 3px; 
+  background-color: #ecf5fe;
+  padding: 8px 3px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   transition: width 0.3s ease;
   position: fixed;
-  top: 54.67px; /* chiều cao của navbar */
-  height: calc(100vh - 54.67px); /* toàn bộ chiều cao màn hình */
-  z-index: 40;
+  top: 60px;
+  height: calc(100vh - 65px);
+  z-index: 2;
+  border: 1px solid #b9e5fb;
+  box-shadow: 0 0 10px rgba(230, 254, 255, 0.2);
+ border-radius: 6px; 
 }
 
 .sidebar.collapsed {
-  width: 60px;
+  width: 45px;
   align-items: center;
 }
 
 .sidebar-icons {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   width: 100%;
 }
 
@@ -56,7 +59,7 @@ body {
 
 .sidebar .icon:hover,
 .sidebar .icon.active {
-  background-color: #e5eef7;
+  background-color: #b9e5fb;
   /* font-weight: bold; */
 }
 
@@ -84,7 +87,7 @@ body {
 }
 
 .column_sidebar {
-  background-color: #f1f6fa;
+  background-color: transparent;
   transition: width 0.3s ease;
   overflow: hidden;
 }
@@ -92,15 +95,23 @@ body {
 .column_content {
   flex: 1;
   overflow-y: auto;
-  background-color: #f1f8fd;
-  padding: 2px;
+
+  border: 1px solid #d0d7de;          
+  border-radius: 6px;                  
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+  margin-right: 3px;  
+  margin-top: 6px;  
+ 
+  height: calc(100vh - 65px);
+  
 }
 
 .row {
   display: flex;
   width: 100%;
-  gap: 10px;
-  height: calc(100vh - 54.67px); 
+  gap: 5px;
+  height: calc(100vh - 65px); 
+  /* padding: 6px 3px 3px 3px; */
 }
 
 
