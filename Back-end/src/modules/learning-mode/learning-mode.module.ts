@@ -3,6 +3,7 @@ import { LearningModeService } from './learning-mode.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Words } from '@database/entities/word.entity';
 import { LearningModeController } from '@controllers/learning-mode.controller';
+import { GoogleGenAI } from '@google/genai';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Words])],
