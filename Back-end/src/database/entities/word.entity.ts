@@ -44,6 +44,14 @@ export class Words {
   wordKind: WordKind[];
 
   @Column({
+    name: 'synonyms',
+    type: 'text',
+    default: null,
+    nullable: true,
+  })
+  synonyms: string | null;
+
+  @Column({
     name: 'metadata',
     default: null,
     type: 'json',

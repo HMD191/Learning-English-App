@@ -27,6 +27,8 @@ class WordDto {
   })
   wordKind: WordKind[];
 
+  synonyms: string | null | undefined;
+
   category: string | null | undefined;
 }
 

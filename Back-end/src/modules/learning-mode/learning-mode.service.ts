@@ -34,7 +34,7 @@ export class LearningModeService {
   }
 
   getPromptWordKindChoice(word: Words, difficulty: Difficulty): string {
-    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb based on the word "${word.engMeaning.toLowerCase()}" (include original word).
+    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb which based on the word "${word.engMeaning.toLowerCase()}" (include original word).
     The options must be different from each other in spelling and must not be labeled with their word kinds.
     If distractors cannot be generated enough from the word "${word.engMeaning.toLowerCase()}", use unrelated words that fit the required parts of speech.
     The sentence should be suitable for ${difficulty} level. 
@@ -54,6 +54,7 @@ export class LearningModeService {
     promptOption: 'meaning' | 'wordKind',
     difficulty: Difficulty = Difficulty.Hard,
   ): Promise<ReturnQuestionAnswerDto> {
+    console.log('difficulty:', difficulty);
     const word = await this.wordRepository
       .createQueryBuilder('words')
       .orderBy('RANDOM()')
@@ -96,9 +97,10 @@ export class LearningModeService {
         },
       },
     });
-    console.log(response.text);
 
     const content: string = response.text ?? '';
+
+    console.log('AI response content:', content);
 
     let sentence: string = '';
     const answerOptions: string[] = [];
@@ -110,7 +112,7 @@ export class LearningModeService {
         sentence = line.replace('Sentence:', '').trim();
       } else if (line.startsWith('RightAnswer:')) {
         rightAnswer = line.replace('RightAnswer:', '').trim();
-      } else if (/^[a-d][:)]/.test(line)) {
+      } else if (/^[a-d]:/.test(line) && answerOptions.length < 4) {
         const option = line.split(':')[1].trim();
         answerOptions.push(option);
       }
@@ -138,6 +140,7 @@ export class LearningModeService {
         sentence: sentence,
         answerOptions: answerOptions,
         rightAnswer: rightAnswer,
+        explanation: explanation,
       },
     };
   }
@@ -163,7 +166,7 @@ export class LearningModeService {
 
     console.log('Selected English word:', engWord);
     console.log('Vietnamese words:', vnWords);
-    console.log('Right answer index:', randomIdx);
+    console.log('Right answer:', options[randomIdx]);
 
     return {
       statusCode: 200,
@@ -198,7 +201,7 @@ export class LearningModeService {
 
     console.log('Selected Vietnamese word:', vnWord);
     console.log('English words:', engWords);
-    console.log('Right answer index:', randomIdx);
+    console.log('Right answer:', options[randomIdx]);
 
     return {
       statusCode: 200,
@@ -225,6 +228,8 @@ export class LearningModeService {
     const characters = word.engMeaning
       .split('')
       .sort(() => Math.random() - 0.5);
+
+    console.log('characters:', characters);
 
     return {
       statusCode: 200,

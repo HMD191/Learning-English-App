@@ -23,9 +23,13 @@ export class WordService {
   async addWord(wordDto: WordDto): Promise<ReturnStringDto> {
     wordDto.wordKind.sort();
     wordDto.engMeaning = capitalizeFirstLetter(wordDto.engMeaning);
+    wordDto.vnMeaning = capitalizeFirstLetter(wordDto.vnMeaning);
 
     if (wordDto.category) {
       wordDto.category = capitalizeFirstLetter(wordDto.category);
+    }
+    if (wordDto.synonyms) {
+      wordDto.synonyms = capitalizeFirstLetter(wordDto.synonyms);
     }
 
     // check if the word already exists
@@ -46,6 +50,7 @@ export class WordService {
         engMeaning: wordDto.engMeaning,
         vnMeaning: wordDto.vnMeaning,
         wordKind: wordDto.wordKind,
+        synonyms: wordDto.synonyms || null,
       };
 
       if (wordDto.category) {
@@ -84,6 +89,9 @@ export class WordService {
     wordDto.vnMeaning = capitalizeFirstLetter(wordDto.vnMeaning);
     wordDto.newEngMeaning = capitalizeFirstLetter(wordDto.newEngMeaning);
     wordDto.wordKind.sort();
+    if (wordDto.category) {
+      wordDto.category = capitalizeFirstLetter(wordDto.category);
+    }
 
     const existedWord = await this.wordRepository.findOne({
       where: { engMeaning: wordDto.engMeaning },
@@ -112,6 +120,7 @@ export class WordService {
         engMeaning: wordDto.newEngMeaning,
         vnMeaning: wordDto.vnMeaning,
         wordKind: wordDto.wordKind,
+        synonyms: wordDto.synonyms || null,
         lastUpdate: new Date(),
       };
 
@@ -163,6 +172,7 @@ export class WordService {
         vnMeaning: word.vnMeaning,
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
+        synonyms: word.synonyms || null,
       }));
 
       if (words.length === 0) {
@@ -203,6 +213,7 @@ export class WordService {
         vnMeaning: wordDb.vnMeaning,
         wordKind: wordDb.wordKind,
         category: wordDb.category ? wordDb.category.categoryName : null,
+        synonyms: wordDb.synonyms || null,
       };
 
       return {
@@ -235,6 +246,7 @@ export class WordService {
         vnMeaning: word.vnMeaning,
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
+        synonyms: word.synonyms || null,
       }));
 
       console.log(`Found ${words.length} words matching "${searchTerm}"`);
@@ -280,6 +292,7 @@ export class WordService {
         vnMeaning: word.vnMeaning,
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
+        synonyms: word.synonyms || null,
       }));
 
       console.log(`Found ${words.length} words matching the filter.`);
