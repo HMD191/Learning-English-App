@@ -1,0 +1,232 @@
+/* app/learning/learning.css */
+
+.leaning-page {
+   padding: 20px 40px;
+  background-color: #f1f8fd;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.quiz-container {
+  max-width: 720px;
+  margin: 60px auto;
+  padding: 32px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.instruction {
+  font-size: 18px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.question-sentence {
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 24px;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.answer-button {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  text-align: left;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.answer-button:hover {
+  background-color: #f5f5f5;
+}
+
+.answer-button.correct {
+  background-color: #d1fae5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.answer-button.wrong {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.answer-number {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* .result-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+} */
+ .result-bar {
+  margin-top: 20px;
+}
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* .result-text {
+  font-size: 16px;
+  color: #444;
+} */
+
+.result-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+/* .result-text::before {
+  content: "📝 ";
+} */
+.explanation-text {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+}
+.next-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.next-button:hover {
+  background-color: #1d4ed8;
+}
+
+/* --- Thêm ở cuối --- */
+/* --- Complete Word Styles --- */
+.assembled-word {
+  background-color: #eaf6fc;
+  height: 50px;
+  margin: 0 auto 24px;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px 3px;
+  border-radius: 8px;
+  line-height: 30px;
+  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.answer-button.correct {
+  background-color: #51cf66;
+  color: white;
+}
+
+.answer-button.wrong {
+  background-color: #ff6b6b;
+  color: white;
+}
+.answer-button.selected-letter {
+  background-color: #ffd966; /* vàng nhạt hoặc màu bạn thích */
+  border: 2px solid #f1c232;
+}
+
+
+/* Loader animation */
+.loader {
+  width: 60px;
+  aspect-ratio: 1;
+  background: 
+    radial-gradient(farthest-side at top, #0000 calc(100% - 21px), lightblue calc(100% - 20px) 99%, #0000) bottom/100% 50%,
+    radial-gradient(farthest-side, lightblue 94%, #0000) left / 20px 20px,
+    radial-gradient(farthest-side, lightblue 94%, #0000) right / 20px 20px;
+  background-repeat: no-repeat;
+  position: relative;
+  margin: 10px auto;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  inset: auto 0 0;
+  margin: auto;
+  border-radius: 50%;
+  background: orange;
+  transform-origin: 50% -10px;
+  animation: l14 1s infinite cubic-bezier(0.5, 623, 0.5, -623);
+}
+
+@keyframes l14 {
+  100% {
+    transform: rotate(0.5deg);
+  }
+}
+
+/* Optional: center the whole container */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* canh giữa theo chiều dọc */
+  height: 100%; /* đảm bảo container cao 100% */
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+.explanation-text {
+  margin-top: 8px;
+  padding: 5px 10px 5px 20px;
+  background-color: #f8f9fa; /* màu nền nhẹ */
+  border-left: 4px solid #3b82f6; /* viền xanh dương */
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  white-space: pre-line; /* xuống dòng theo \n */
+}
+/* Reset margin/padding mặc định của ul, li bên trong */
+.explanation-text * {
+  margin: 0;
+  padding: 0;
+}
+
+.speaker-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.1em;
+}

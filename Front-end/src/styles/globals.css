@@ -6,7 +6,8 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to top, #cce3ff, #fdfbfe, #fdfbfe, #fdfbfe); /* 3 màu */
+  background: linear-gradient(to top, #cce3ff, #fdfbfe, #fdfbfe, #fdfbfe);
+  /* 3 màu */
   color: #333;
   height: 100vh;
 }
@@ -17,7 +18,7 @@ a {
 
 .sidebar {
   width: 160px;
-  left: 3px; 
+  left: 3px;
   background-color: #ecf5fe;
   padding: 8px 3px;
   display: flex;
@@ -30,7 +31,7 @@ a {
   z-index: 2;
   border: 1px solid #b9e5fb;
   box-shadow: 0 0 10px rgba(230, 254, 255, 0.2);
- border-radius: 6px; 
+  border-radius: 6px;
 }
 
 .sidebar.collapsed {
@@ -75,7 +76,8 @@ a {
 } */
 
 .navbar {
-  position: sticky;     /* hoặc fixed */
+  position: sticky;
+  /* hoặc fixed */
   top: 0;
   z-index: 50;
   display: flex;
@@ -95,22 +97,22 @@ a {
 .column_content {
   flex: 1;
   overflow-y: auto;
+  background-color: #f1f8fd;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-right: 3px;
+  margin-top: 6px;
 
-  border: 1px solid #d0d7de;          
-  border-radius: 6px;                  
-  box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-  margin-right: 3px;  
-  margin-top: 6px;  
- 
   height: calc(100vh - 65px);
-  
+
 }
 
 .row {
   display: flex;
   width: 100%;
   gap: 5px;
-  height: calc(100vh - 65px); 
+  height: calc(100vh - 65px);
   /* padding: 6px 3px 3px 3px; */
 }
 
@@ -125,6 +127,7 @@ a {
   align-items: center;
   justify-content: center;
   font-size: 12px;
+   overflow: hidden; 
 }
 
 .search-input {
@@ -143,7 +146,7 @@ a {
   display: flex;
   align-items: center;
   gap: 8px;
-  
+
 }
 
 .add-btn {
