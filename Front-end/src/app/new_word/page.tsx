@@ -28,6 +28,7 @@ interface WordItem {
   id: number;
   english: string;
   type: string; // comma-separated values e.g., "noun,verb"
+  synonyms?: string; // optional field for synonyms
   vietnamese: string;
   category?: string;
   status?: string;
@@ -38,7 +39,7 @@ interface WordItem {
 const NewWord = () => {
 
   const [words, setWords] = useState<WordItem[]>([
-    { id: 1, english: "", type: "", vietnamese: "" },
+    { id: 1, english: "", type: "", vietnamese: "", synonyms: "" },
   ]);
   useEffect(() => {
     fetchTopics();
@@ -61,13 +62,25 @@ const NewWord = () => {
   };
 
   const handleAddRow = () => {
-    const newId = words.length > 0 ? words[words.length - 1].id + 1 : 1;
-    setWords([...words, { id: newId, english: "", type: "", vietnamese: "" }]);
+  const newWord: WordItem = {
+    id: words.length + 1,
+    english: "",
+    type: "",
+    vietnamese: "",
+    synonyms: "",
   };
+  setWords([...words, newWord]);
+};
 
   const handleDeleteRow = (id: number) => {
-    setWords(words.filter((item) => item.id !== id));
-  };
+  const updated = words
+    .filter((item) => item.id !== id)
+    .map((item, index) => ({
+      ...item,
+      id: index + 1, // cập nhật id lại từ 1
+    }));
+  setWords(updated);
+};
 
   const handleChange = (id: number, field: keyof WordItem, value: string) => {
     setWords(
@@ -83,7 +96,7 @@ const NewWord = () => {
         if (!item.english || !item.vietnamese || !item.type) {
           return {
             ...item,
-            status: "Thiếu thông tin, vui lòng điền đủ 3 ô!",
+            status: "Thiếu thông tin, vui lòng điền đủ 3 ô (English, Vietnamese, Type)!",
           };
         }
 
@@ -93,6 +106,7 @@ const NewWord = () => {
             vnMeaning: item.vietnamese,
             wordKind: item.type.split(",").map((s) => s.trim()),
             category: item.category || "",
+            synonyms: item.synonyms || "",
           });
 
           return { ...item, status: res.data.message };
@@ -145,9 +159,22 @@ const NewWord = () => {
     { value: "__create__", label: "➕ Tạo chủ đề mới" }
   ];
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
+const handleAddRowAndCloseDropdown = () => {
+  setMenuOpen(false); // Đóng dropdown trước
+  handleAddRow();     // Chạy logic thêm từ của bạn
+};
+
   return (
     <div className="newword-container">
       <h2>Thêm từ mới</h2>
+      <div >
+        
+        <button className="done-btn" onClick={handleSubmit}>
+          Create
+        </button>
+      </div>
 
       {words.map((item) => {
         const selectedOptions: OptionType[] = item.type
@@ -161,7 +188,9 @@ const NewWord = () => {
           : [];
         // const selectRef = useRef<any>(null);
         return (
+          
           <div key={item.id} className="newword-card">
+           
             <div className="newword-header">
               <span>
                 {item.id}
@@ -218,7 +247,7 @@ const NewWord = () => {
                   hideSelectedOptions={false}
                   onMenuOpen={() => console.log("Menu opened")}
                   onMenuClose={() => console.log("Menu closed")}
-                  
+
                   onChange={(newValue, actionMeta) => {
                     const selected = newValue as MultiValue<OptionType>;
 
@@ -299,6 +328,17 @@ const NewWord = () => {
               <div className="input-group">
                 <input
                   type="text"
+                  placeholder="Enter synonyms"
+                  value={item.synonyms || ""}
+                  onChange={(e) =>
+                    handleChange(item.id, "synonyms", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="input-group">
+                <input
+                  type="text"
                   placeholder="Enter meaning"
                   value={item.vietnamese}
                   onChange={(e) =>
@@ -353,13 +393,11 @@ const NewWord = () => {
         );
       })}
 
-      <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
-        <button className="add_word-btn" onClick={handleAddRow}>
+      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <button className="add_word-btn" onClick={handleAddRowAndCloseDropdown}>
           Thêm từ
         </button>
-        <button className="done-btn" onClick={handleSubmit}>
-          Done
-        </button>
+        
       </div>
       {showCreateTopicModal && (
         <CreateTopicModal

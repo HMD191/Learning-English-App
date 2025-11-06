@@ -4,7 +4,7 @@ import "./words.css";
 import CreateTopicModal from "@/components/CreateTopicModal";
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 import axios from "axios";
-import { Pencil, Trash2 } from "lucide-react";
+import { Volume2, Pencil, Trash2 } from "lucide-react";
 import Select, { components, MultiValue } from "react-select";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -13,6 +13,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface Word {
   english: string;
   vietnamese: string;
+  synonyms: string;
   type: string;
   category?: string;
 }
@@ -36,6 +37,8 @@ const WordListPage = () => {
   const [showCreateTopicModal, setShowCreateTopicModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [pendingDeleteWord, setPendingDeleteWord] = useState<string | null>(null);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | null>(null);
+
   // const [newTopicName, setNewTopicName] = useState("");
 
   useEffect(() => {
@@ -44,22 +47,29 @@ const WordListPage = () => {
   }, []);
 
   const fetchWords = async () => {
-    try {
-      const res = await axios.get(`${apiUrl}/all-words`);
-      const apiWords = res.data.words;
+  try {
+    const res = await axios.get(`${apiUrl}/all-words`, {
+      headers: {
+        "ngrok-skip-browser-warning": "true", // 👈 thêm đúng chỗ
+      },
+    });
 
-      const mappedWords: Word[] = apiWords.map((w: any) => ({
-        english: w.engMeaning,
-        vietnamese: w.vnMeaning,
-        type: w.wordKind.join(", "),
-        category: w.category || "",
-      }));
+    const apiWords = res.data.words;
 
-      setWords(mappedWords);
-    } catch (err) {
-      console.error("❌ Error fetching words:", err);
-    }
-  };
+    const mappedWords: Word[] = apiWords.map((w: any) => ({
+      english: w.engMeaning,
+      vietnamese: w.vnMeaning,
+      type: w.wordKind.join(", "),
+      synonyms: w.synonyms,
+      category: w.category || "",
+    }));
+
+    setWords(mappedWords);
+  } catch (err) {
+    console.error("❌ Error fetching words:", err);
+  }
+};
+
 
   const fetchTopics = async () => {
     try {
@@ -98,6 +108,7 @@ const WordListPage = () => {
           engMeaning: originalEngMeaning,
           newEngMeaning: editedWord.english,
           vnMeaning: editedWord.vietnamese,
+          synonyms: editedWord.synonyms,
           wordKind: editedWord.type.split(",").map((s) => s.trim()),
           category: editedWord.category || "",
         });
@@ -147,6 +158,22 @@ const WordListPage = () => {
   console.log("  matched =", extendedTopics.find(opt => opt.value === editedWord?.category));
   console.log("  extendedTopics =", extendedTopics);
 
+  const speakText = (text: string) => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+
+  const voices = speechSynthesis.getVoices();
+  const selectedVoice = voices.find(voice =>
+    voice.lang === "en-US" && voice.name.includes("Google")
+  );
+
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+  }
+
+  speechSynthesis.speak(utterance);
+};
+
   return (
     <div className="wordlist-container">
       <h2>Danh sách từ</h2>
@@ -156,10 +183,12 @@ const WordListPage = () => {
             <th>STT</th>
             <th>English</th>
             <th>Type</th>
+            <th>Synonyms</th>
             <th>Vietnamese</th>
             <th>Category</th>
             <th>Actions</th>
           </tr>
+          
         </thead>
         <tbody>
           {words.map((word, index) => (
@@ -253,6 +282,21 @@ const WordListPage = () => {
               <td>
                 {editingIndex === index ? (
                   <input
+                    value={editedWord?.synonyms || ""}
+                    onChange={(e) =>
+                      setEditedWord({
+                        ...editedWord!,
+                        synonyms: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  word.synonyms || "N/A"
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
                     value={editedWord?.vietnamese || ""}
                     onChange={(e) =>
                       setEditedWord({
@@ -310,6 +354,10 @@ const WordListPage = () => {
                 )}
               </td>
               <td className="actions">
+                {/* Nút phát âm */}
+                <button onClick={() => speakText(word.english)}>
+                  <Volume2 size={16} />
+                </button>
                 {editingIndex === index ? (
                   <button onClick={handleSave}>💾</button>
                 ) : (

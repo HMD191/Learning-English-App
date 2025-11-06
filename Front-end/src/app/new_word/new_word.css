@@ -77,23 +77,40 @@
   text-align: center;
 }
 
-.done-btn,
-.add_word-btn {
-  background-color: #aecff0;
-  border: 1px solid #8590f4;
+.done-btn {
+  background-color: #76c2e9;
+  border: 1px solid #bfbfbf;
   color: rgb(40, 33, 76);
-  /* border: none; */
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
+  margin-bottom: 12px; 
 }
 
-.done-btn:hover,
+.add_word-btn {
+  background-color: #feffff;
+  border: 1px solid #bfbfbf;
+  color: rgb(40, 33, 76);
+  /* border: none; */
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  /* display: flex; */
+  align-items: center;
+  margin-top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.done-btn:hover {
+  background-color: #2787b4;
+  color: white;
+}
 .add_word-btn:hover {
-  background-color: #d1e9ff;
-  color: #004a99;
+  background-color: #eef2ff;
+  color: #013266;
 }
 
 
