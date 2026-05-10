@@ -19,8 +19,8 @@ a {
 .sidebar {
   width: 160px;
   left: 3px;
-  /* background-color: #ecf5fe; */
-    background-color: #81be18;
+  background-color: #ecf5fe;
+    /* background-color: #81be18; */
 
   padding: 8px 3px;
   display: flex;
