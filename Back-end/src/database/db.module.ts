@@ -14,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
         port: config.get<number>('DB_PORT'),
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
-        database: 'learning_english_db',
+        database: config.get<string>('DB_NAME'),
 
         entities: [Words, Categories],
         synchronize: false,
