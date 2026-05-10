@@ -14,8 +14,8 @@ export class CreateWordsAndCategories1778401988668
       CREATE TYPE "words_word_kind_enum" AS ENUM (
         'noun',
         'verb',
-        'adjective',
-        'adverb'
+        'adj',
+        'adv'
       )
     `);
 
