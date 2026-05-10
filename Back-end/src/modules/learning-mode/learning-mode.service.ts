@@ -34,9 +34,9 @@ export class LearningModeService {
   }
 
   getPromptWordKindChoice(word: Words, difficulty: Difficulty): string {
-    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb which based on the word "${word.engMeaning.toLowerCase()}" (include original word).
+    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options to fill in the blank corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb which based on the word "${word.engMeaning.toLowerCase()}" (include original word).
     The options must be different from each other in spelling and must not be labeled with their word kinds.
-    If distractors cannot be generated enough from the word "${word.engMeaning.toLowerCase()}", use unrelated words that fit the required parts of speech.
+    If cannot be generated enough valid words from the word "${word.engMeaning.toLowerCase()}", use unrelated words that fit the required parts of speech.
     The sentence should be suitable for ${difficulty} level. 
     Generate an explanation in vietnamese for correct answer.
     Follow the format below strictly:
@@ -120,10 +120,10 @@ export class LearningModeService {
 
     const explanation = content.split('Explanation:')[1]?.trim();
 
-    console.log('sentence:', sentence);
-    console.log('Answer Options:', answerOptions);
-    console.log('Right Answer:', rightAnswer);
-    console.log('Explanation:', explanation);
+    // console.log('sentence:', sentence);
+    // console.log('Answer Options:', answerOptions);
+    // console.log('Right Answer:', rightAnswer);
+    // console.log('Explanation:', explanation);
 
     if (!sentence.length || !answerOptions.length || !rightAnswer.length) {
       // return {

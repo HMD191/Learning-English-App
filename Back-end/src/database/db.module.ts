@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
         database: 'learning_english_db',
 
         entities: [Words, Categories],
-        synchronize: true,
+        synchronize: false,
       }),
     }),
   ],
