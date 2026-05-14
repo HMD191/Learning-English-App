@@ -5,11 +5,11 @@ import { LearningModeService } from '@modules/learning-mode/learning-mode.servic
 import { Difficulty } from '@src/constants/constants';
 import { capitalizeFirstLetter } from '@src/common/helper';
 
-@Controller('learning-mode')
+@Controller('learning')
 export class LearningModeController {
   constructor(private readonly learningModeService: LearningModeService) {}
 
-  @Get('complete-sentence-meaning')
+  @Get('fill-in-the-blank/meaning')
   async getFillInTheBlankQuestion(
     @Query('difficulty') difficulty?: string,
   ): Promise<ReturnQuestionAnswerDto> {
@@ -27,7 +27,7 @@ export class LearningModeController {
     );
   }
 
-  @Get('complete-sentence-word-kind')
+  @Get('fill-in-the-blank/word-kind')
   async getFillInTheBlankWordKind(
     @Query('difficulty') difficulty?: string,
   ): Promise<ReturnQuestionAnswerDto> {
@@ -45,17 +45,17 @@ export class LearningModeController {
     );
   }
 
-  @Get('1Eng-4Vn-words')
+  @Get('multiple-choice/eng-to-vn')
   async get1Eng4VnWords(): Promise<ReturnQuestionAnswerDto> {
     return await this.learningModeService.get1Eng4VnWords();
   }
 
-  @Get('1Vn-4Eng-words')
+  @Get('multiple-choice/vn-to-eng')
   async get1Vn4EngWords(): Promise<ReturnQuestionAnswerDto> {
     return await this.learningModeService.get1Vn4EngWords();
   }
 
-  @Get('complete-word')
+  @Get('spelling')
   async completeWord(): Promise<ReturnQuestionAnswerDto> {
     return await this.learningModeService.completeWord();
   }

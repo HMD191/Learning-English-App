@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { WordDto, UpdateWordDto } from '@dtos/word-manager.dto';
 import { WordService } from '@modules/word-manager/word.service';
@@ -24,36 +25,36 @@ export class WordController {
     private readonly categoryService: CategoryService,
   ) {}
 
-  @Post('add-word')
+  @Post('words')
   async addWord(@Body() wordDto: WordDto): Promise<ReturnStringDto> {
     return await this.wordService.addWord(wordDto);
   }
 
-  @Put('update-word')
+  @Put('words')
   async updateWord(@Body() wordDto: UpdateWordDto): Promise<ReturnStringDto> {
     return await this.wordService.updateWord(wordDto);
   }
 
-  @Get('all-words')
+  @Get('words')
   async getAllWords(): Promise<ReturnWordsDto> {
     return await this.wordService.getAllWords();
   }
 
-  @Get('get-word/:engMeaning')
+  @Get('words/search')
+  async fuzzyFindWords(
+    @Query('q') searchTerm: string,
+  ): Promise<ReturnWordsDto> {
+    return await this.wordService.fuzzyFindWords(searchTerm);
+  }
+
+  @Get('words/:engMeaning')
   async getWordByEngMeaning(
     @Param('engMeaning') engMeaning: string,
   ): Promise<ReturnWordDto> {
     return await this.wordService.getWordByEngMeaning(engMeaning);
   }
 
-  @Get('fuzzy-find-words/:searchTerm')
-  async fuzzyFindWords(
-    @Param('searchTerm') searchTerm: string,
-  ): Promise<ReturnWordsDto> {
-    return await this.wordService.fuzzyFindWords(searchTerm);
-  }
-
-  @Delete('delete-word/:engMeaning')
+  @Delete('words/:engMeaning')
   async deleteWord(
     @Param('engMeaning') engMeaning: string,
   ): Promise<ReturnStringDto> {
@@ -61,14 +62,14 @@ export class WordController {
   }
 
   // Category-related endpoints
-  @Post('add-category')
+  @Post('categories')
   async addCategory(
     @Body('categoryName') categoryName: string,
   ): Promise<ReturnStringDto> {
     return await this.categoryService.addCategory(categoryName);
   }
 
-  @Put('update-category')
+  @Put('categories')
   async updateCategory(
     @Body('oldCategoryName') oldCategoryName: string,
     @Body('newCategoryName') newCategoryName: string,
@@ -79,14 +80,14 @@ export class WordController {
     );
   }
 
-  @Post('delete-category')
+  @Delete('categories')
   async deleteCategory(
     @Body('categoryName') categoryName: string,
   ): Promise<ReturnStringDto> {
     return await this.categoryService.deleteCategory(categoryName);
   }
 
-  @Get('all-categories')
+  @Get('categories')
   async getAllCategories(): Promise<ReturnCategoryDto> {
     return await this.categoryService.getAllCategories();
   }
