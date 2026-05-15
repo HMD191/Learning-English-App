@@ -261,28 +261,32 @@ export class WordService {
   }
 
   async filterWords(filter: FilterWordsDto): Promise<ReturnWordsDto> {
-    const { categories, wordKind } = filter;
-
-    const queryBuilder = this.wordRepository
-      .createQueryBuilder('words')
-      .leftJoinAndSelect('words.category', 'category');
+    const { categories, wordKinds } = filter;
+    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+    console.log('Filtering words...');
 
     if (categories && categories.length > 0) {
+      console.log('Filtering words by categories: ', categories);
       queryBuilder.leftJoinAndSelect('words.category', 'category');
-      queryBuilder.where('category.categoryName IN (:...categories)', {
-        categories: categories.map(
-          (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
-        ),
-      });
+      queryBuilder
+        .where('category.categoryName IN (:...categories)', {
+          categories: categories.map(
+            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
+          ),
+        })
+        .orderBy('words.engMeaning', 'ASC');
     }
 
-    if (wordKind && wordKind.length > 0) {
-      queryBuilder.andWhere(
-        'words.wordKind && ARRAY[:...wordKind]::varchar[]',
-        {
-          wordKind: wordKind.map((w) => w.toLowerCase()),
-        },
-      );
+    if (wordKinds && wordKinds.length > 0) {
+      console.log('Filtering words by word kinds: ', wordKinds);
+      queryBuilder
+        .andWhere(
+          'words.wordKind && ARRAY[:...wordKind]::words_word_kind_enum[]',
+          {
+            wordKind: wordKinds.map((w) => w.toLowerCase()),
+          },
+        )
+        .orderBy('words.engMeaning', 'ASC');
     }
 
     try {
@@ -302,7 +306,7 @@ export class WordService {
       };
     } catch (error) {
       console.error('Error filtering words:', error);
-      throw new InternalServerErrorException('Database filter failed');
+      throw new InternalServerErrorException('Filtering words failed');
     }
   }
 

@@ -11,7 +11,7 @@ import { Categories } from './category.entity';
 @Entity()
 export class Words {
   @PrimaryGeneratedColumn({ unsigned: true })
-  id: number;
+  id!: number;
 
   @ManyToOne(() => Categories, (category) => category.words, {
     nullable: true,
@@ -26,14 +26,14 @@ export class Words {
     unique: true,
     length: 255,
   })
-  engMeaning: string;
+  engMeaning!: string;
 
   @Column({
     name: 'vn_meaning',
     type: 'varchar',
     length: 255,
   })
-  vnMeaning: string;
+  vnMeaning!: string;
 
   @Column({
     name: 'word_kind',
@@ -41,7 +41,7 @@ export class Words {
     enum: WordKind,
     array: true,
   })
-  wordKind: WordKind[];
+  wordKind!: WordKind[];
 
   @Column({
     name: 'synonyms',
@@ -49,7 +49,7 @@ export class Words {
     default: null,
     nullable: true,
   })
-  synonyms: string | null;
+  synonyms!: string | null;
 
   @Column({
     name: 'metadata',
@@ -57,12 +57,12 @@ export class Words {
     type: 'json',
     nullable: true,
   })
-  metadata: Record<string, any>;
+  metadata!: Record<string, any>;
 
   @Column({
     name: 'last_update',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  lastUpdate: Date;
+  lastUpdate!: Date;
 }
