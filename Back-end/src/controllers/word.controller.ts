@@ -17,7 +17,6 @@ import {
   ReturnWordsDto,
 } from '@dtos/return-message.dto';
 import { CategoryService } from '@src/modules/word-manager/category.service';
-import { WordKind } from '@src/constants/constants';
 
 @Controller()
 export class WordController {

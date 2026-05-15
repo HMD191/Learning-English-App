@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "ignoreDeprecations": "6.0",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -19,14 +18,13 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@database/*": ["src/database/*"],
-      "@dtos/*": ["src/dtos/*"],
-      "@modules/*": ["src/modules/*"],
-      "@constants/*": ["src/constants/*"]
+      "@src/*": ["./src/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@database/*": ["./src/database/*"],
+      "@dtos/*": ["./src/dtos/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@constants/*": ["./src/constants/*"]
     }
   }
 }
