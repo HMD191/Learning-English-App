@@ -8,7 +8,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { WordDto, UpdateWordDto } from '@dtos/word-manager.dto';
+import { WordDto, UpdateWordDto, FilterWordsDto } from '@dtos/word-manager.dto';
 import { WordService } from '@modules/word-manager/word.service';
 import {
   ReturnCategoryDto,
@@ -17,6 +17,7 @@ import {
   ReturnWordsDto,
 } from '@dtos/return-message.dto';
 import { CategoryService } from '@src/modules/word-manager/category.service';
+import { WordKind } from '@src/constants/constants';
 
 @Controller()
 export class WordController {
@@ -38,6 +39,11 @@ export class WordController {
   @Get('words')
   async getAllWords(): Promise<ReturnWordsDto> {
     return await this.wordService.getAllWords();
+  }
+
+  @Post('words/filter')
+  async filterWords(@Body() filter: FilterWordsDto): Promise<ReturnWordsDto> {
+    return await this.wordService.filterWords(filter);
   }
 
   @Get('words/search')
@@ -80,15 +86,15 @@ export class WordController {
     );
   }
 
+  @Get('categories')
+  async getAllCategories(): Promise<ReturnCategoryDto> {
+    return await this.categoryService.getAllCategories();
+  }
+
   @Delete('categories')
   async deleteCategory(
     @Body('categoryName') categoryName: string,
   ): Promise<ReturnStringDto> {
     return await this.categoryService.deleteCategory(categoryName);
-  }
-
-  @Get('categories')
-  async getAllCategories(): Promise<ReturnCategoryDto> {
-    return await this.categoryService.getAllCategories();
   }
 }
