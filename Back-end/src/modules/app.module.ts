@@ -17,6 +17,8 @@ import { AuthModule } from '@src/auth/auth.module';
         DB_PASSWORD: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION: Joi.string().default('1d'),
+        DB_NAME: Joi.string().required(),
+        GOOGLE_GENAI_MODEL: Joi.string().required(),
       }),
     }),
     DbModule,
