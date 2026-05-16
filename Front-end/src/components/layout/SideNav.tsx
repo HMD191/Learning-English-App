@@ -36,7 +36,7 @@ export default function SideNav() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex flex-col h-screen left-0 w-64 bg-surface-container-low dark:bg-inverse-surface py-stack-lg px-stack-md shrink-0">
+    <aside className="hidden md:flex flex-col h-screen left-0 w-64 bg-surface-container-low  py-stack-lg px-stack-md shrink-0">
       {/* Logo Area */}
       <div className="mb-10 px-4">
         <div className="flex items-center gap-3">
