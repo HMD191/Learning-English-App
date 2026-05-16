@@ -1,6 +1,6 @@
 export default function TopNav() {
   return (
-    <header className="grid items-center px-margin-desktop py-4 w-full z-50 bg-surface dark:bg-surface-dim shadow-sm grid-cols-2 lg:grid-cols-12">
+    <header className="grid items-center px-margin-desktop py-4 w-full z-50 bg-surface  shadow-sm grid-cols-2 lg:grid-cols-12">
       <div className="flex items-center justify-start lg:col-span-1"></div>
       <div className="flex items-center justify-start lg:col-span-8">
         <div className="relative hidden lg:block w-full">
