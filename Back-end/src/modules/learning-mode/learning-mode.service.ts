@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { Difficulty } from '@constants/constants';
 import { GoogleGenAI } from '@google/genai';
+import { ConfigService } from '@nestjs/config';
 
 Injectable();
 export class LearningModeService {
@@ -12,6 +13,7 @@ export class LearningModeService {
   constructor(
     @InjectRepository(Words)
     private wordRepository: Repository<Words>,
+    private readonly configService: ConfigService,
   ) {
     this.ai = new GoogleGenAI({
       apiKey: process.env.GOOGLE_GENAI_API_KEY,
@@ -53,12 +55,22 @@ export class LearningModeService {
   async getFillInTheBlankQuestion(
     promptOption: 'meaning' | 'wordKind',
     difficulty: Difficulty = Difficulty.Hard,
+    categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
     console.log('difficulty:', difficulty);
-    const word = await this.wordRepository
-      .createQueryBuilder('words')
-      .orderBy('RANDOM()')
-      .getOne();
+    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+
+    if (categories && categories.length > 0) {
+      queryBuilder
+        .leftJoin('words.category', 'category')
+        .where('category.categoryName IN (:...categories)', {
+          categories: categories.map(
+            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
+          ),
+        });
+    }
+
+    const word = await queryBuilder.orderBy('RANDOM()').getOne();
 
     console.log('Selected word:', word?.engMeaning);
     if (!word) {
@@ -89,7 +101,9 @@ export class LearningModeService {
     console.log('Requesting AI model for data');
 
     const response = await this.ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model:
+        this.configService.get<string>('GOOGLE_GENAI_MODEL') ||
+        'gemini-2.5-flash',
       contents: prompt,
       config: {
         thinkingConfig: {
@@ -240,4 +254,7 @@ export class LearningModeService {
       },
     };
   }
+}
+function where(arg0: string, arg1: { categories: string[] }) {
+  throw new Error('Function not implemented.');
 }
