@@ -1,13 +1,24 @@
-import MainLayout from "../components/MainLayout";
+import LearningQueue from "@/components/home/LearningQueue";
+import StatsGrid from "@/components/home/StatsGrid";
+import SupplementalColumn from "@/components/home/SupplementalColumn";
+import WelcomeBanner from "@/components/home/WelcomeBanner";
+import WordOfDay from "@/components/home/WordOfDay";
 
-export default function Home() {
+export default function HomePage() {
   return (
-   
-      <div className="text-blue-800">
-        <h1 className="text-xl font-bold">Ứng dụng này giúp bạn học tiếng Anh một cách hiệu quả.</h1>
-               
+    <div className="max-w-container-max mx-auto space-y-stack-lg">
+      <WelcomeBanner />
 
+      <StatsGrid />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+        <div className="lg:col-span-2 space-y-gutter">
+          <LearningQueue />
+          <WordOfDay />
+        </div>
+
+        <SupplementalColumn />
       </div>
-   
+    </div>
   );
 }

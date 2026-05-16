@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f8f9ff;
+  --color-on-background: #121c2a;
+
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #d0dbed;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container-high: #dee9fc;
+  --color-surface-container-highest: #d9e3f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container: #e6eeff;
+  --color-surface-variant: #d9e3f6;
+
+  --color-on-surface: #121c2a;
+  --color-on-surface-variant: #494552;
+
+  --color-primary: #674bb5;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #a78bfa;
+  --color-on-primary-container: #3c1989;
+  --color-primary-fixed: #e8ddff;
+  --color-primary-fixed-dim: #cebdff;
+
+  --color-secondary-container: #efdae6;
+  --color-on-secondary-container: #6e5e68;
+
+  --color-outline: #7a7583;
+  --color-outline-variant: #cac4d4;
+  --color-inverse-surface: #27313f;
+  --color-inverse-primary: #cebdff;
+
+  --spacing-gutter: 24px;
+  --spacing-margin-desktop: 40px;
+  --spacing-margin-tablet: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-lg: 32px;
+  --spacing-unit: 4px;
+
+  --container-container-max: 1280px;
+
+  --radius-lg: 10px;
+  --radius-xl: 10px;
+
+  --font-headline-lg: "Inter", sans-serif;
+  --font-headline-sm: "Inter", sans-serif;
+  --font-headline-md: "Inter", sans-serif;
+  --font-body-md: "Inter", sans-serif;
+  --font-body-sm: "Inter", sans-serif;
+  --font-body-lg: "Inter", sans-serif;
+  --font-label-md: "Inter", sans-serif;
+  --font-label-sm: "Inter", sans-serif;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-headline-sm: 20px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--letter-spacing: 0.01em;
+  --text-label-md--font-weight: 500;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--font-weight: 600;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: "Inter", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+.form-input-focus:focus {
+  outline: none;
+  border-color: var(--color-primary-container);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
