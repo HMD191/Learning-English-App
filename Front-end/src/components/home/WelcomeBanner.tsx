@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function WelcomeBanner() {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
@@ -12,10 +13,13 @@ export default function WelcomeBanner() {
             going and reach your daily goal of 20 words.
           </p>
 
-          <button className="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:shadow-lg transition-shadow">
+          <Link
+            href="/learning"
+            className="inline-flex bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-md text-label-md items-center gap-2 hover:shadow-lg transition-shadow"
+          >
             <span className="material-symbols-outlined">play_circle</span>
             Start Lesson
-          </button>
+          </Link>
         </div>
 
         <div className="absolute right-0 bottom-0 w-1/3 h-full opacity-20 pointer-events-none bg-gradient-to-l from-primary-container to-transparent" />
@@ -28,7 +32,7 @@ export default function WelcomeBanner() {
       <div className="lg:col-span-4 bg-primary text-on-primary p-stack-lg rounded-xl shadow-sm flex flex-col justify-between">
         <div>
           <h3 className="font-headline-sm text-headline-sm mb-1">
-            Daily Streak
+            Daily Stressssss
           </h3>
           <p className="text-primary-fixed text-sm">You are on fire!</p>
         </div>

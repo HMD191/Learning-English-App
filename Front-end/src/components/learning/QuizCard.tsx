@@ -71,124 +71,133 @@ export default function QuizCard({
     return data.sentence.replace("____", "____");
   }
 
-  return (
-    <div className="w-full max-w-4xl bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden p-stack-lg md:p-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-stack-lg gap-stack-md">
-        <span className="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm">
-          {modeDescriptions[mode]}
-        </span>
+ return (
+  <div className="w-full max-w-4xl bg-white border border-outline-variant/70 rounded-3xl shadow-[0_8px_24px_rgba(31,41,55,0.05)] overflow-hidden">
+    <div className="p-5 md:p-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-7 gap-4">
+          <div>
+            {/* <span className="inline-flex items-center rounded-full bg-primary-container px-3 py-1 text-label-sm font-bold text-primary">
+              {modeDescriptions[mode]}
+            </span> */}
 
-        <div className="flex items-center gap-2">
-          <div className="w-48 h-2 bg-surface-container rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary-container"
-              style={{ width: `${progressPercent}%` }}
-            />
+            <p className="mt-2 text-body-sm text-on-surface-variant">
+              Question {questionNumber} of {totalQuestions}
+            </p>
           </div>
-          <span className="text-label-sm text-on-surface-variant">
-            {questionNumber}/{totalQuestions}
-          </span>
+
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="h-2 flex-1 md:w-56 bg-surface-container rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+
+            <span className="text-label-sm font-bold text-on-surface-variant">
+              {progressPercent}%
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-4 mb-stack-sm">
-          <h2 className="text-display-lg font-display-lg text-on-surface">
-            {getQuestionTitle()}
-          </h2>
+        <div className="text-center mb-5">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <h2 className="max-w-3xl text-[22px] leading-[30px] md:text-[26px] md:leading-[34px] font-bold tracking-[-0.025em] text-on-surface">
+              {getQuestionTitle()}
+            </h2>
 
-          {(mode === "1Eng-4Vn-words" ||
-            mode === "complete-sentence-meaning") && (
-            <button
-              type="button"
-              onClick={() => onSpeak(data.sentence)}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-primary-container/20 text-primary hover:bg-primary-container/30 transition-colors"
-              aria-label="Listen"
-            >
-              <span className="material-symbols-outlined">volume_up</span>
-            </button>
+            {(mode === "1Eng-4Vn-words" ||
+              mode === "complete-sentence-meaning") && (
+              <button
+                type="button"
+                onClick={() => onSpeak(data.sentence)}
+                className="w-11 h-11 flex items-center justify-center rounded-full bg-primary-container text-primary hover:bg-primary-fixed-dim transition-colors"
+                aria-label="Listen"
+              >
+                <span className="material-symbols-outlined">volume_up</span>
+              </button>
+            )}
+          </div>
+
+          <p className="text-[15px] leading-6 text-on-surface-variant">
+            {modeInstructions[mode]}
+          </p>
+
+          {isCompleteWordMode && (
+            <div className="mt-8">
+              <div
+                className={`inline-flex min-h-[64px] min-w-[260px] items-center justify-center rounded-2xl border-2 px-7 text-headline-md font-bold tracking-[0.25em] transition-all ${
+                  showResult
+                    ? isCompleteWordCorrect
+                      ? "bg-success-container border-success text-on-success-container"
+                      : "bg-error-container border-error text-on-error-container"
+                    : "bg-surface-container-low border-outline-variant text-on-surface"
+                }`}
+              >
+                {assembledWord || "_____"}
+              </div>
+            </div>
           )}
         </div>
 
-        <p className="text-body-lg text-on-surface-variant italic">
-          {modeInstructions[mode]}
-        </p>
+        {isCompleteWordMode ? (
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {data.answerOptions.map((option, index) => {
+              const isActive = activeIndices.includes(index);
 
-        {isCompleteWordMode && (
-          <div className="mt-stack-lg">
-            <div
-              className={`inline-flex min-h-[56px] min-w-[220px] items-center justify-center rounded-xl border-2 px-6 text-headline-md font-bold tracking-[0.25em] ${
-                showResult
-                  ? isCompleteWordCorrect
-                    ? "bg-[#E8F5E9] border-[#4CAF50] text-[#2E7D32]"
-                    : "bg-[#FFEBEE] border-[#EF5350] text-[#C62828]"
-                  : "bg-surface-container-low border-outline-variant text-on-surface"
-              }`}
-            >
-              {assembledWord || "_____"}
-            </div>
+              return (
+                <button
+                  key={`${option}-${index}`}
+                  type="button"
+                  onClick={() => onChoose(index)}
+                  disabled={showResult}
+                  className={`w-14 h-14 rounded-2xl border text-headline-sm font-bold transition-all disabled:cursor-default ${
+                    isActive
+                      ? "bg-primary text-on-primary border-primary shadow-[0_8px_20px_rgba(66,85,255,0.2)]"
+                      : "bg-white border-outline-variant text-on-surface hover:border-primary hover:bg-primary-container"
+                  }`}
+                >
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+            {data.answerOptions.map((option, index) => {
+              const isChosen = selected === index;
+              const isAnswerCorrect = showResult && index === correctIndex;
+              const isWrong = showResult && isChosen && index !== correctIndex;
+
+              return (
+                <AnswerOption
+                  key={`${option}-${index}`}
+                  label={LETTERS[index].toUpperCase()}
+                  option={option}
+                  isSelected={isChosen}
+                  isCorrect={isAnswerCorrect}
+                  isWrong={isWrong}
+                  disabled={showResult}
+                  onClick={() => onChoose(index)}
+                />
+              );
+            })}
           </div>
         )}
+
+        {showResult && (
+          <ResultPanel
+            isCorrect={isCorrect}
+            correctAnswerText={correctAnswerText}
+            explanation={data.explanation}
+            onNext={onNext}
+            onSpeak={
+              isCompleteWordMode
+                ? () => onSpeak(data.rightAnswer)
+                : undefined
+            }
+          />
+        )}
       </div>
-
-      {isCompleteWordMode ? (
-        <div className="flex flex-wrap justify-center gap-stack-md mb-stack-lg">
-          {data.answerOptions.map((option, index) => {
-            const isActive = activeIndices.includes(index);
-
-            return (
-              <button
-                key={`${option}-${index}`}
-                type="button"
-                onClick={() => onChoose(index)}
-                disabled={showResult}
-                className={`w-14 h-14 rounded-xl border text-headline-sm font-bold transition-all ${
-                  isActive
-                    ? "bg-primary text-on-primary border-primary shadow-sm"
-                    : "bg-white border-outline-variant text-on-surface hover:border-primary-container hover:bg-surface-container-low"
-                }`}
-              >
-                {option}
-              </button>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-lg">
-          {data.answerOptions.map((option, index) => {
-            const isChosen = selected === index;
-            const isAnswerCorrect = showResult && index === correctIndex;
-            const isWrong = showResult && isChosen && index !== correctIndex;
-
-            return (
-              <AnswerOption
-                key={`${option}-${index}`}
-                label={LETTERS[index].toUpperCase()}
-                option={option}
-                isSelected={isChosen}
-                isCorrect={isAnswerCorrect}
-                isWrong={isWrong}
-                disabled={showResult}
-                onClick={() => onChoose(index)}
-              />
-            );
-          })}
-        </div>
-      )}
-
-      {showResult && (
-        <ResultPanel
-          isCorrect={isCorrect}
-          correctAnswerText={correctAnswerText}
-          explanation={data.explanation}
-          onNext={onNext}
-          onSpeak={
-            isCompleteWordMode
-              ? () => onSpeak(data.rightAnswer)
-              : undefined
-          }
-        />
-      )}
     </div>
   );
 }
