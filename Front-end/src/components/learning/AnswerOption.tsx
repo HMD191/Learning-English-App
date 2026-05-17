@@ -18,33 +18,33 @@ export default function AnswerOption({
   onClick,
 }: AnswerOptionProps) {
   let buttonClass =
-    "flex items-center gap-stack-md p-stack-md rounded-lg text-left transition-all border bg-white hover:border-primary-container hover:bg-surface-container-low";
+    "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-white border-outline-variant/70 hover:border-primary/30 hover:bg-primary-container/20 disabled:cursor-default";
 
   let labelClass =
-    "w-10 h-10 shrink-0 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant font-bold text-label-md";
+    "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-surface-container-low text-on-surface-variant font-semibold text-[18px] transition-colors";
 
   let icon: string | null = null;
   let iconClass = "";
 
   if (isCorrect) {
     buttonClass =
-      "flex items-center gap-stack-md p-stack-md rounded-lg text-left transition-all border-2 bg-[#E8F5E9] border-[#4CAF50] shadow-sm";
+      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#eef9f1] border-[#8fd3a7] shadow-none disabled:cursor-default";
     labelClass =
-      "w-10 h-10 shrink-0 flex items-center justify-center rounded-lg bg-[#4CAF50] text-white font-bold text-label-md";
-    icon = "check_circle";
-    iconClass = "text-[#4CAF50]";
+      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#cfeedd] text-[#1f8a55] font-semibold text-[18px]";
+    // icon = "check_circle";
+    // iconClass = "text-[#26a269]";
   } else if (isWrong) {
     buttonClass =
-      "flex items-center gap-stack-md p-stack-md rounded-lg text-left transition-all border-2 bg-[#FFEBEE] border-[#EF5350] shadow-sm";
+      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#fff2f0] border-[#f2aaa2] shadow-none disabled:cursor-default";
     labelClass =
-      "w-10 h-10 shrink-0 flex items-center justify-center rounded-lg bg-[#EF5350] text-white font-bold text-label-md";
-    icon = "cancel";
-    iconClass = "text-[#EF5350]";
+      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#ffd9d4] text-[#d05c50] font-semibold text-[18px]";
+    // icon = "cancel";
+    // iconClass = "text-[#e06a5f]";
   } else if (isSelected) {
     buttonClass =
-      "flex items-center gap-stack-md p-stack-md rounded-lg text-left transition-all border-2 bg-primary-container/10 border-primary-container shadow-sm";
+      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#eef1ff] border-[#b8c2ff] shadow-none disabled:cursor-default";
     labelClass =
-      "w-10 h-10 shrink-0 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold text-label-md";
+      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#dce1ff] text-primary font-semibold text-[18px]";
   }
 
   return (
@@ -56,12 +56,14 @@ export default function AnswerOption({
     >
       <span className={labelClass}>{label}</span>
 
-      <div className="flex-grow">
-        <p className="text-body-md font-semibold text-on-surface">{option}</p>
+      <div className="flex-grow min-w-0">
+        <p className="text-[15px] leading-6 font-medium text-on-surface">
+          {option}
+        </p>
       </div>
 
       {icon && (
-        <span className={`material-symbols-outlined ${iconClass}`}>
+        <span className={`material-symbols-outlined text-[24px] ${iconClass}`}>
           {icon}
         </span>
       )}

@@ -241,10 +241,10 @@ export default function NewWordForm() {
       <div className="bg-surface shadow-md rounded-xl border border-outline-variant overflow-hidden">
         <div className="p-stack-lg border-b border-outline-variant bg-surface-container-lowest">
           <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">
+            {/* <span className="material-symbols-outlined text-primary">
               edit_note
-            </span>
-            Multi-row Entry Form
+            </span> */}
+           Create New Words
           </h3>
 
           {isLoadingTopics && (

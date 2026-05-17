@@ -17,62 +17,75 @@ export default function ResultPanel({
 }: ResultPanelProps) {
   return (
     <>
-      <div className="bg-surface-container border-l-4 border-primary-container p-stack-md rounded-r-lg mb-10">
+      <div
+        className={`rounded-2xl p-5 mb-5 border ${
+          isCorrect
+            ? "bg-success-container border-success/30"
+            : "bg-error-container border-error/30"
+        }`}
+      >
         <div className="flex items-start gap-3">
-          <span className="material-symbols-outlined text-primary mt-1">
-            info
-          </span>
+          <div
+            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+              isCorrect ? "bg-success text-white" : "bg-error text-white"
+            }`}
+          >
+            <span className="material-symbols-outlined">
+              {isCorrect ? "check_circle" : "error"}
+            </span>
+          </div>
 
-          <div className="flex-1">
-            <p className="text-label-md font-bold text-on-surface mb-1 uppercase tracking-wider">
-              {isCorrect ? "Correct" : "Review Answer"}
+          <div className="flex-1 min-w-0">
+            <p className="text-label-md font-bold text-on-surface uppercase tracking-[0.08em]">
+              {isCorrect ? "Correct" : "Review answer"}
             </p>
 
-            <div className="text-body-sm text-on-surface-variant leading-relaxed">
-              <p className="mb-2">
-                {isCorrect
-                  ? "Great job! You selected the correct answer."
-                  : `Not quite. The correct answer is "${correctAnswerText}".`}
-                {onSpeak && (
-                  <button
-                    type="button"
-                    onClick={onSpeak}
-                    className="ml-2 text-primary hover:opacity-80"
-                    aria-label="Listen"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">
-                      volume_up
-                    </span>
-                  </button>
-                )}
-              </p>
+            <p className="mt-2 text-body-sm text-on-surface-variant leading-relaxed">
+              {isCorrect
+                ? "Nice work. You picked the right answer."
+                : `Not quite. The correct answer is "${correctAnswerText}".`}
 
-              {explanation && (
-                <div
-                  className="prose prose-sm max-w-none text-on-surface-variant"
-                  dangerouslySetInnerHTML={{
-                    __html: marked.parse(explanation),
-                  }}
-                />
+              {onSpeak && (
+                <button
+                  type="button"
+                  onClick={onSpeak}
+                  className="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-full text-primary hover:bg-white/70 transition-colors"
+                  aria-label="Listen"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    volume_up
+                  </span>
+                </button>
               )}
-            </div>
+            </p>
+
+            {explanation && (
+              <div
+                className="mt-3 max-h-[96px] overflow-y-auto pr-2 text-[14px] leading-6 text-on-surface-variant"
+                dangerouslySetInnerHTML={{
+                  __html: marked.parse(explanation),
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center pt-stack-lg border-t border-outline-variant">
+      <div className="pt-5 border-t border-outline-variant/70 flex justify-between items-center">
         <button className="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-md transition-colors">
-          <span className="material-symbols-outlined">flag</span>
-          Report Issue
+          <span className="material-symbols-outlined text-[20px]">flag</span>
+          Report
         </button>
 
         <button
           type="button"
           onClick={onNext}
-          className="bg-[#7C5CFC] hover:bg-primary text-white px-8 py-3 rounded-lg font-label-md shadow-md active:scale-95 transition-all flex items-center gap-2"
+          className="bg-primary hover:bg-on-primary-container text-white px-7 py-3 rounded-full font-label-md shadow-[0_8px_20px_rgba(66,85,255,0.22)] active:scale-[0.98] transition-all flex items-center gap-2"
         >
-          Next Question
-          <span className="material-symbols-outlined">arrow_forward</span>
+          Next question
+          <span className="material-symbols-outlined text-[20px]">
+            arrow_forward
+          </span>
         </button>
       </div>
     </>

@@ -3,6 +3,7 @@ import WordTableRow from "./WordTableRow";
 
 type WordsTableProps = {
   words: Word[];
+  startIndex: number;
   topics: string[];
   isLoading: boolean;
   originalEnglish: string | null;
@@ -18,6 +19,7 @@ type WordsTableProps = {
 
 export default function WordsTable({
   words,
+  startIndex,
   topics,
   isLoading,
   originalEnglish,
@@ -32,39 +34,45 @@ export default function WordsTable({
 }: WordsTableProps) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[1120px] text-left border-collapse">
+      <table className="w-full min-w-[1040px] text-left border-collapse">
         <thead>
-          <tr className="bg-surface-container-low border-b border-outline-variant">
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+          <tr className="bg-surface-container-low border-b border-outline-variant/70">
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               #
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               English
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               Type
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               Synonyms
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               Vietnamese
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">
               Topic
             </th>
-            <th className="px-6 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">
+
+            <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70 text-center">
               Actions
             </th>
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-outline-variant/20">
+        <tbody className="divide-y divide-outline-variant/30">
           {isLoading ? (
             <tr>
               <td
                 colSpan={7}
-                className="px-6 py-12 text-center text-body-md text-on-surface-variant"
+                className="px-4 py-10 text-center text-[14px] text-on-surface-variant"
               >
                 Loading words...
               </td>
@@ -73,7 +81,7 @@ export default function WordsTable({
             <tr>
               <td
                 colSpan={7}
-                className="px-6 py-12 text-center text-body-md text-on-surface-variant"
+                className="px-4 py-10 text-center text-[14px] text-on-surface-variant"
               >
                 No words found.
               </td>
@@ -81,8 +89,8 @@ export default function WordsTable({
           ) : (
             words.map((word, index) => (
               <WordTableRow
-                key={`${word.english}-${index}`}
-                index={index}
+                key={`${word.english}-${startIndex + index}`}
+                index={startIndex + index}
                 word={word}
                 topics={topics}
                 isEditing={originalEnglish === word.english}

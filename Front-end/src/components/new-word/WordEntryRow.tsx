@@ -78,10 +78,10 @@ export default function WordEntryRow({
     value.status?.toLowerCase().includes("created");
 
   return (
-    <div className="pt-6 px-6 pb-6 rounded-xl bg-surface border border-outline-variant shadow-sm space-y-4">
-      <div className="flex justify-between items-center border-b border-outline-variant pb-4">
+    <div className="pt-4 px-5 pb-5 rounded-xl bg-surface border border-outline-variant shadow-sm space-y-3">
+      <div className="flex justify-between items-center border-b border-outline-variant pb-3">
         <h4 className="text-label-sm font-bold uppercase text-outline">
-          New Word Entry {index + 1}
+           {index + 1}
 
           {value.status && (
             <span
@@ -114,8 +114,8 @@ export default function WordEntryRow({
           <input
             value={value.english}
             onChange={(event) => onChange("english", event.target.value)}
-            className="w-full h-[42px] bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-body-md form-input-focus"
-            placeholder="e.g. Word"
+            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            placeholder="Word"
             type="text"
           />
         </div>
@@ -129,7 +129,7 @@ export default function WordEntryRow({
             <button
               type="button"
               onClick={() => setIsTypeDropdownOpen((isOpen) => !isOpen)}
-              className={`w-full h-[42px] bg-surface-container-low border rounded-lg px-4 py-2 pr-10 text-body-md text-left cursor-pointer form-input-focus ${
+              className={`w-full h-11 bg-surface-container-low border rounded-xl px-4 pr-10 text-[15px] font-normal text-left cursor-pointer form-input-focus ${
                 isTypeDropdownOpen
                   ? "border-primary-container"
                   : "border-outline-variant"
@@ -139,7 +139,7 @@ export default function WordEntryRow({
                 className={
                   selectedTypes.length > 0
                     ? "text-on-surface"
-                    : "text-on-surface-variant"
+                    : "text-on-surface-variant/60"
                 }
               >
                 {selectedTypeLabels}
@@ -184,7 +184,7 @@ export default function WordEntryRow({
           <input
             value={value.synonyms}
             onChange={(event) => onChange("synonyms", event.target.value)}
-            className="w-full h-[42px] bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-body-md form-input-focus"
+           className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="synonyms"
             type="text"
           />
@@ -198,7 +198,7 @@ export default function WordEntryRow({
           <input
             value={value.meaning}
             onChange={(event) => onChange("meaning", event.target.value)}
-            className="w-full h-[42px] bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-body-md form-input-focus"
+            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Definition"
             type="text"
           />
@@ -213,7 +213,7 @@ export default function WordEntryRow({
             <select
               value={value.topic}
               onChange={(event) => onChange("topic", event.target.value)}
-              className="w-full h-[42px] appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 pr-10 text-body-md form-input-focus cursor-pointer"
+              className="w-full h-11 appearance-none bg-surface-container-low border border-outline-variant rounded-xl px-4 pr-10 text-[15px] font-normal text-on-surface form-input-focus cursor-pointer"
             >
               <option value="" disabled>
                 Select Topic

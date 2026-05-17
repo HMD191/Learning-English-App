@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import LearningHeader from "./LearningHeader";
+// import LearningHeader from "./LearningHeader";
 import LearningTips from "./LearningTips";
 import LoadingLearning from "./LoadingLearning";
 import QuizCard from "./QuizCard";
@@ -163,34 +163,34 @@ export default function LearningPage() {
   }
 
   return (
-    <div className="max-w-container-max mx-auto flex flex-col items-center">
-      <LearningHeader />
+  <div className="max-w-container-max mx-auto flex flex-col items-center px-0">
+    {/* <LearningHeader /> */}
 
-      {errorMessage && (
-        <div className="w-full max-w-4xl mb-stack-md rounded-xl border border-error-container bg-error-container/40 p-stack-md text-error">
-          {errorMessage}
-        </div>
-      )}
+    {errorMessage && (
+      <div className="w-full max-w-5xl mb-4 rounded-2xl border border-error-container bg-error-container/60 p-4 text-error">
+        {errorMessage}
+      </div>
+    )}
 
-      {isLoading || !data ? (
-        <LoadingLearning />
-      ) : (
-        <QuizCard
-          data={data}
-          mode={mode}
-          selected={selected}
-          showResult={showResult}
-          userAnswer={userAnswer}
-          activeIndices={activeIndices}
-          questionNumber={questionNumber}
-          totalQuestions={20}
-          onChoose={handleChoose}
-          onNext={fetchQuestion}
-          onSpeak={speakText}
-        />
-      )}
+    {isLoading || !data ? (
+      <LoadingLearning />
+    ) : (
+      <QuizCard
+        data={data}
+        mode={mode}
+        selected={selected}
+        showResult={showResult}
+        userAnswer={userAnswer}
+        activeIndices={activeIndices}
+        questionNumber={questionNumber}
+        totalQuestions={20}
+        onChoose={handleChoose}
+        onNext={fetchQuestion}
+        onSpeak={speakText}
+      />
+    )}
 
-      <LearningTips />
-    </div>
-  );
+    <LearningTips />
+  </div>
+);
 }

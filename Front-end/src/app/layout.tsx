@@ -27,7 +27,7 @@ export default function RootLayout({
         <div className="flex-grow flex flex-col h-screen overflow-hidden">
           <TopNav />
 
-          <main className="flex-grow overflow-y-auto p-gutter lg:p-margin-desktop pb-24 md:pb-gutter">
+          <main className="flex-grow overflow-y-auto px-gutter py-stack-sm lg:px-margin-desktop lg:py-stack-lg">
             {children}
           </main>
         </div>

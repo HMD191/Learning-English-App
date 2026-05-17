@@ -40,7 +40,7 @@ export default function WordTableRow({
         {index + 1}
       </td>
 
-      <td className="px-6 py-5">
+      <td className="px-4 py-3">
         {isEditing ? (
           <input
             value={editedWord?.english || ""}
@@ -50,13 +50,13 @@ export default function WordTableRow({
             className="w-full h-[40px] bg-surface-container-low border border-outline-variant rounded-lg px-3 text-body-sm form-input-focus"
           />
         ) : (
-          <span className="font-headline-sm text-headline-sm text-on-surface">
+          <span className="text-[14px] leading-5 font-normal text-on-surface">
             {word.english}
           </span>
         )}
       </td>
 
-      <td className="px-6 py-5">
+      <td className="px-4 py-3">
         {isEditing ? (
           <div className="flex flex-wrap gap-2">
             {wordTypes.map((type) => (
@@ -96,7 +96,7 @@ export default function WordTableRow({
         )}
       </td>
 
-      <td className="px-6 py-5">
+      <td className="px-4 py-3">
         {isEditing ? (
           <input
             value={editedWord?.synonyms || ""}
@@ -112,7 +112,7 @@ export default function WordTableRow({
         )}
       </td>
 
-      <td className="px-6 py-5">
+      <td className="px-4 py-3">
         {isEditing ? (
           <input
             value={editedWord?.vietnamese || ""}
@@ -128,7 +128,7 @@ export default function WordTableRow({
         )}
       </td>
 
-      <td className="px-6 py-5">
+      <td className="px-4 py-3">
         {isEditing ? (
           <div className="space-y-1">
             <div className="relative">
@@ -169,15 +169,15 @@ export default function WordTableRow({
         )}
       </td>
 
-      <td className="px-6 py-5 text-right">
-        <div className="flex items-center justify-end gap-1">
+      <td className="px-4 py-3 ">
+        <div className="flex items-center justify-center gap-1">
           <button
             type="button"
             onClick={() => onSpeak(word.english)}
             className="p-2 text-outline hover:text-primary transition-colors"
             aria-label="Listen"
           >
-            <span className="material-symbols-outlined">
+            <span className="material-symbols-outlined text-[18px]">
               volume_up
             </span>
           </button>
@@ -189,7 +189,7 @@ export default function WordTableRow({
               className="p-2 text-outline hover:text-primary transition-colors"
               aria-label="Save"
             >
-              <span className="material-symbols-outlined">
+              <span className="material-symbols-outlined text-[18px]">
                 save
               </span>
             </button>
@@ -200,7 +200,7 @@ export default function WordTableRow({
               className="p-2 text-outline hover:text-primary transition-colors"
               aria-label="Edit"
             >
-              <span className="material-symbols-outlined">
+              <span className="material-symbols-outlined text-[18px]">
                 edit
               </span>
             </button>
@@ -212,7 +212,7 @@ export default function WordTableRow({
             className="p-2 text-outline hover:text-error transition-colors"
             aria-label="Delete"
           >
-            <span className="material-symbols-outlined">
+            <span className="material-symbols-outlined text-[18px]">
               delete
             </span>
           </button>
