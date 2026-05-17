@@ -3,6 +3,7 @@ import {
   IsArray,
   IsIn,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -40,11 +41,13 @@ class UpdateWordDto extends WordDto {
 }
 
 class FilterWordsDto {
+  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true, message: 'Categories must be an array of strings' })
   categories?: string[];
 
+  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @IsIn(Object.values(WordKind), {
