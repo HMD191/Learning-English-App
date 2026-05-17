@@ -50,17 +50,17 @@ export class LearningModeController {
   }
 
   @Get('multiple-choice/eng-to-vn')
-  async get1Eng4VnWords(
+  async mutiChoiceEn2Vn(
     @Query('categories') categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
-    return await this.learningModeService.get1Eng4VnWords();
+    return await this.learningModeService.mutiChoiceEn2Vn(categories);
   }
 
   @Get('multiple-choice/vn-to-eng')
-  async get1Vn4EngWords(
+  async mutiChoiceVn2En(
     @Query('categories') categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
-    return await this.learningModeService.get1Vn4EngWords();
+    return await this.learningModeService.mutiChoiceVn2En(categories);
   }
 
   @Get('spelling')

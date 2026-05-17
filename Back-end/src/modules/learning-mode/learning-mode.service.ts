@@ -159,70 +159,112 @@ export class LearningModeService {
     };
   }
 
-  async get1Eng4VnWords(): Promise<ReturnQuestionAnswerDto> {
+  async mutiChoiceEn2Vn(
+    categories?: string[],
+  ): Promise<ReturnQuestionAnswerDto> {
+    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+
+    if (categories && categories.length > 0) {
+      queryBuilder
+        .leftJoinAndSelect('words.category', 'category')
+        .where('category.categoryName IN (:...categories)', {
+          categories: categories.map(
+            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
+          ),
+        });
+    }
+
+    const chosenWord = await queryBuilder.orderBy('RANDOM()').getOne();
+
+    if (!chosenWord) {
+      throw new Error('No words available for learning mode.');
+    }
+
+    const engChosenWord = chosenWord.engMeaning;
+    const vnChosenWord = chosenWord.vnMeaning;
+
     const words = await this.wordRepository
       .createQueryBuilder('words')
+      .where('words.engMeaning != :engWord', { engWord: engChosenWord })
       .orderBy('RANDOM()')
-      .limit(4)
+      .limit(3)
       .getMany();
 
-    if (words.length < 4) {
+    if (words.length < 3) {
       throw new Error('Not enough words available for learning mode.');
     }
 
-    const options = ['a', 'b', 'c', 'd'];
-    const randomIdx = Math.floor(Math.random() * words.length);
+    let vnWords = words.map((word) => word.vnMeaning);
+    vnWords = [vnChosenWord, ...vnWords];
+    vnWords.sort(() => Math.random() - 0.5);
 
-    const engWord = words[randomIdx].engMeaning;
-    const vnWords = words.map(
-      (word) => word.vnMeaning[0].toUpperCase() + word.vnMeaning.slice(1),
-    );
+    const rightAnswerIndex = vnWords.indexOf(vnChosenWord);
 
-    console.log('Selected English word:', engWord);
+    console.log('Selected English word:', engChosenWord);
     console.log('Vietnamese words:', vnWords);
-    console.log('Right answer:', options[randomIdx]);
+    console.log('Right answer:', vnWords[rightAnswerIndex]);
 
     return {
       statusCode: 200,
       questionAnswer: {
-        sentence: `Find the word with the same meaning as: '${engWord}'`,
+        sentence: `Find the word with the same meaning as: '${engChosenWord}'`,
         answerOptions: vnWords,
-        rightAnswer: options[randomIdx],
+        rightAnswer: vnWords[rightAnswerIndex],
       },
     };
   }
 
-  async get1Vn4EngWords(): Promise<ReturnQuestionAnswerDto> {
+  async mutiChoiceVn2En(
+    categories?: string[],
+  ): Promise<ReturnQuestionAnswerDto> {
+    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+
+    if (categories && categories.length > 0) {
+      queryBuilder
+        .leftJoinAndSelect('words.category', 'category')
+        .where('category.categoryName IN (:...categories)', {
+          categories: categories.map(
+            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
+          ),
+        });
+    }
+
+    const chosenWord = await queryBuilder.orderBy('RANDOM()').getOne();
+
+    if (!chosenWord) {
+      throw new Error('No words available for learning mode.');
+    }
+
+    const vnChosenWord = chosenWord.vnMeaning;
+    const engChosenWord = chosenWord.engMeaning;
+
     const words = await this.wordRepository
       .createQueryBuilder('words')
+      .where('words.engMeaning != :engWord', { engWord: engChosenWord })
       .orderBy('RANDOM()')
-      .limit(4)
+      .limit(3)
       .getMany();
 
-    if (words.length < 4) {
+    if (words.length < 3) {
       throw new Error('Not enough words available for learning mode.');
     }
 
-    const options = ['a', 'b', 'c', 'd'];
-    const randomIdx = Math.floor(Math.random() * words.length);
+    let engWords = words.map((word) => word.engMeaning);
+    engWords = [engChosenWord, ...engWords];
+    engWords.sort(() => Math.random() - 0.5);
 
-    const vnWord =
-      words[randomIdx].vnMeaning[0].toUpperCase() +
-      words[randomIdx].vnMeaning.slice(1);
-    const engWords = words.map(
-      (word) => word.engMeaning[0].toUpperCase() + word.engMeaning.slice(1),
-    );
+    const rightAnswerIndex = engWords.indexOf(engChosenWord);
 
-    console.log('Selected Vietnamese word:', vnWord);
+    console.log('Selected Vietnamese word:', vnChosenWord);
     console.log('English words:', engWords);
-    console.log('Right answer:', options[randomIdx]);
+    console.log('Right answer:', engWords[rightAnswerIndex]);
 
     return {
       statusCode: 200,
       questionAnswer: {
-        sentence: `Tìm từ có cùng nghĩa: '${vnWord}'`,
+        sentence: `Tìm từ có cùng nghĩa: '${vnChosenWord}'`,
         answerOptions: engWords,
-        rightAnswer: options[randomIdx],
+        rightAnswer: engWords[rightAnswerIndex],
       },
     };
   }
