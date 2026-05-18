@@ -136,59 +136,43 @@ export default function AllWordsPage() {
         return;
       }
 
-      // const response = await fetch(`${apiUrl}/words/filter`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "ngrok-skip-browser-warning": "true",
-      //   },
-      //   body: JSON.stringify({
-      //     categories: filters.categories,
-      //     wordKinds: filters.wordKinds,
-      //   }),
-        
-      // });
-
       const filterBody = {
-  categories: filters.categories,
-  wordKinds: filters.wordKinds,
-};
+        categories: filters.categories,
+        wordKinds: filters.wordKinds,
+      };
 
-console.log("Filter body:", filterBody);
+      console.log("Filter body:", filterBody);
 
-const response = await fetch(`${apiUrl}/words/filter`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true",
-  },
-  body: JSON.stringify(filterBody),
-});
+      const response = await fetch(`${apiUrl}/words/filter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+        body: JSON.stringify(filterBody),
+      });
 
-if (!response.ok) {
-  const errorData = await response.json().catch(() => null);
-  console.error("Filter API error:", errorData);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error("Filter API error:", errorData);
 
-  throw new Error(
-    errorData?.message || errorData?.error || "Filter words failed."
-  );
-}
+        throw new Error(
+          errorData?.message || errorData?.error || "Filter words failed."
+        );
+      }
 
-      // if (!response.ok) {
-      //   throw new Error("Filter words failed.");
-      // }
 
       const data = await response.json();
 
       const wordsFromApi = Array.isArray(data.words)
         ? data.words
         : Array.isArray(data.filteredWords)
-        ? data.filteredWords
-        : Array.isArray(data.result)
-        ? data.result
-        : Array.isArray(data)
-        ? data
-        : [];
+          ? data.filteredWords
+          : Array.isArray(data.result)
+            ? data.result
+            : Array.isArray(data)
+              ? data
+              : [];
 
       setWords(mapBackendWords(wordsFromApi));
       setSelectedFilterCategories(filters.categories);
