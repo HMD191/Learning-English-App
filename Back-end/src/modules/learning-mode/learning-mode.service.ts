@@ -202,14 +202,14 @@ export class LearningModeService {
 
     console.log('Selected English word:', engChosenWord);
     console.log('Vietnamese words:', vnWords);
-    console.log('Right answer:', vnWords[rightAnswerIndex]);
+    console.log('Right answer:', ['a', 'b', 'c', 'd'][rightAnswerIndex]);
 
     return {
       statusCode: 200,
       questionAnswer: {
         sentence: `Find the word with the same meaning as: '${engChosenWord}'`,
         answerOptions: vnWords,
-        rightAnswer: vnWords[rightAnswerIndex],
+        rightAnswer: ['a', 'b', 'c', 'd'][rightAnswerIndex],
       },
     };
   }
@@ -257,14 +257,14 @@ export class LearningModeService {
 
     console.log('Selected Vietnamese word:', vnChosenWord);
     console.log('English words:', engWords);
-    console.log('Right answer:', engWords[rightAnswerIndex]);
+    console.log('Right answer:', ['a', 'b', 'c', 'd'][rightAnswerIndex]);
 
     return {
       statusCode: 200,
       questionAnswer: {
         sentence: `Tìm từ có cùng nghĩa: '${vnChosenWord}'`,
         answerOptions: engWords,
-        rightAnswer: engWords[rightAnswerIndex],
+        rightAnswer: ['a', 'b', 'c', 'd'][rightAnswerIndex],
       },
     };
   }
@@ -296,7 +296,4 @@ export class LearningModeService {
       },
     };
   }
-}
-function where(arg0: string, arg1: { categories: string[] }) {
-  throw new Error('Function not implemented.');
 }
