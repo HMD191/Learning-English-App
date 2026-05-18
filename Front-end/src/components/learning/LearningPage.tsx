@@ -138,11 +138,21 @@ async function handleNextQuestion() {
       setUserAnswer(nextAnswer);
 
       if (
-        nextAnswer.join("") === data.rightAnswer ||
-        nextAnswer.length >= data.rightAnswer.length
-      ) {
-        setShowResult(true);
-      }
+  nextAnswer.join("") === data.rightAnswer ||
+  nextAnswer.length >= data.rightAnswer.length
+) {
+  const isCorrect = nextAnswer.join("") === data.rightAnswer;
+  const audio = new Audio(
+    isCorrect ? "/sound/correct.mp3" : "/sound/wrong.mp3"
+  );
+
+  audio.volume = 0.7;
+  audio.play().catch((error) => {
+    console.error("Play spelling sound error:", error);
+  });
+
+  setShowResult(true);
+}
 
       return;
     }
