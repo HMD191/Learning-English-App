@@ -24,16 +24,7 @@ export default function ResultPanel({
             : "bg-error-container border-error/30"
         }`}
       >
-        <div className="flex items-start gap-3">
-          <div
-            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-              isCorrect ? "bg-success text-white" : "bg-error text-white"
-            }`}
-          >
-            <span className="material-symbols-outlined">
-              {isCorrect ? "check_circle" : "error"}
-            </span>
-          </div>
+        <div>
 
           <div className="flex-1 min-w-0">
             <p className="text-label-md font-bold text-on-surface uppercase tracking-[0.08em]">
@@ -49,7 +40,7 @@ export default function ResultPanel({
                 <button
                   type="button"
                   onClick={onSpeak}
-                  className="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-full text-primary hover:bg-white/70 transition-colors"
+                  className="ml-1 inline-flex h-6 w-6 translate-y-[5.5px] items-center justify-center rounded-full text-primary hover:bg-white/70 transition-colors"
                   aria-label="Listen"
                 >
                   <span className="material-symbols-outlined text-[18px]">

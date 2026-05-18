@@ -263,10 +263,16 @@ export default function NewWordForm() {
           </h3>
 
           {isLoadingTopics && (
-            <p className="text-body-sm text-on-surface-variant mt-2">
-              Loading topics...
-            </p>
-          )}
+  <div className="mt-2 flex items-center gap-1.5 text-[13px] text-on-surface-variant">
+    <span>Loading topics</span>
+
+    <span className="flex items-center gap-0.5">
+      <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+      <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+      <span className="h-1 w-1 rounded-full bg-primary animate-bounce" />
+    </span>
+  </div>
+)}
 
           {topicError && (
             <p className="text-body-sm text-error mt-2">

@@ -99,13 +99,18 @@ export default function LearningPage() {
     setUserAnswer([]);
     setShowResult(false);
     setActiveIndices([]);
-    setQuestionNumber((current) => Math.min(current + 1, 20));
+    // setQuestionNumber((current) => Math.min(current + 1, 20));
   } catch (error) {
     console.error("Fetch question error:", error);
     setErrorMessage("Cannot load question. Please try again.");
   } finally {
     setIsLoading(false);
   }
+}
+
+async function handleNextQuestion() {
+  setQuestionNumber((current) => Math.min(current + 1, 20));
+  await fetchQuestion();
 }
 
   function handleChoose(index: number) {
@@ -185,7 +190,7 @@ export default function LearningPage() {
         questionNumber={questionNumber}
         totalQuestions={20}
         onChoose={handleChoose}
-        onNext={fetchQuestion}
+        onNext={handleNextQuestion}
         onSpeak={speakText}
       />
     )}

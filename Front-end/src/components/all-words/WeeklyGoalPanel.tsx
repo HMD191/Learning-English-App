@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function WeeklyGoalPanel() {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -39,9 +40,12 @@ export default function WeeklyGoalPanel() {
           </p>
         </div>
 
-        <button className="mt-4 w-full py-2.5 bg-white text-primary font-bold rounded-xl hover:bg-primary-container transition-colors">
+        <Link
+          href="/learning"
+          className="mt-4 block w-full py-2.5 bg-white text-primary text-center font-bold rounded-xl hover:bg-primary-container transition-colors"
+        >
           Start Now
-        </button>
+        </Link>
       </div>
     </section>
   );
