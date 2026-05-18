@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { marked } from "marked";
 
 type ResultPanelProps = {
@@ -15,14 +16,14 @@ export default function ResultPanel({
   onNext,
   onSpeak,
 }: ResultPanelProps) {
+  const [isReportPopupOpen, setIsReportPopupOpen] = useState(false);
   return (
     <>
       <div
-        className={`rounded-2xl p-5 mb-5 border ${
-          isCorrect
-            ? "bg-success-container border-success/30"
-            : "bg-error-container border-error/30"
-        }`}
+        className={`rounded-2xl p-5 mb-5 border ${isCorrect
+          ? "bg-success-container border-success/30"
+          : "bg-error-container border-error/30"
+          }`}
       >
         <div>
 
@@ -63,7 +64,11 @@ export default function ResultPanel({
       </div>
 
       <div className="pt-5 border-t border-outline-variant/70 flex justify-between items-center">
-        <button className="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-md transition-colors">
+        <button
+          type="button"
+          onClick={() => setIsReportPopupOpen(true)}
+          className="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-md transition-colors"
+        >
           <span className="material-symbols-outlined text-[20px]">flag</span>
           Report
         </button>
@@ -79,6 +84,35 @@ export default function ResultPanel({
           </span>
         </button>
       </div>
+
+      {isReportPopupOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-inverse-surface/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white border border-outline-variant shadow-[0_20px_50px_rgba(0,0,0,0.16)] overflow-hidden">
+            <div className="p-6 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-primary">
+                <span className="material-symbols-outlined">construction</span>
+              </div>
+
+              <h3 className="text-[20px] leading-7 font-bold text-on-surface">
+                Feature not available yet
+              </h3>
+
+              <p className="mt-2 text-[14px] leading-6 text-on-surface-variant">
+                Reporting questions is not supported yet. This feature will be added
+                in a future update.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setIsReportPopupOpen(false)}
+                className="mt-6 w-full rounded-xl bg-primary px-5 py-2.5 text-on-primary font-label-md text-label-md hover:opacity-90 transition-opacity"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

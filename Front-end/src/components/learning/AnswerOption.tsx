@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 type AnswerOptionProps = {
   label: string;
   option: string;
@@ -17,6 +18,7 @@ export default function AnswerOption({
   disabled,
   onClick,
 }: AnswerOptionProps) {
+  const hasPlayedSoundRef = useRef(false);
   let buttonClass =
     "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-white border-outline-variant/70 hover:border-primary/30 hover:bg-primary-container/20 disabled:cursor-default";
 
@@ -45,6 +47,33 @@ export default function AnswerOption({
       "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#dce1ff] text-primary font-semibold text-[18px]";
   }
 
+  useEffect(() => {
+    if (!disabled || !isSelected || hasPlayedSoundRef.current) return;
+
+    const soundPath = isCorrect
+      ? "/sound/correct.mp3"
+      : isWrong
+        ? "/sound/wrong.mp3"
+        : "";
+
+    if (!soundPath) return;
+
+    hasPlayedSoundRef.current = true;
+
+    const audio = new Audio(soundPath);
+    audio.volume = 0.7;
+
+    audio.play().catch((error) => {
+      console.error("Play answer sound error:", error);
+    });
+  }, [disabled, isSelected, isCorrect, isWrong]);
+
+  useEffect(() => {
+    if (!disabled) {
+      hasPlayedSoundRef.current = false;
+    }
+  }, [disabled]);
+
   return (
     <button
       type="button"
@@ -53,21 +82,21 @@ export default function AnswerOption({
       className={buttonClass}
     >
       {/* <span className={labelClass}> */}
-        {isCorrect ? (
-          <img
-            src="/image/like.png"
-            alt="Correct"
-            className="h-12 w-12 object-contain shrink-0"
-          />
-        ) : isWrong ? (
-          <img
-            src="/image/wrong.png"
-            alt="Wrong"
-            className="h-12 w-12 object-contain shrink-0"
-          />
-        ) : (
-          <span className={labelClass}>{label}</span>
-        )}
+      {isCorrect ? (
+        <img
+          src="/image/like.png"
+          alt="Correct"
+          className="h-12 w-12 object-contain shrink-0"
+        />
+      ) : isWrong ? (
+        <img
+          src="/image/wrong.png"
+          alt="Wrong"
+          className="h-12 w-12 object-contain shrink-0"
+        />
+      ) : (
+        <span className={labelClass}>{label}</span>
+      )}
       {/* </span> */}
 
       <div className="flex-grow min-w-0">
