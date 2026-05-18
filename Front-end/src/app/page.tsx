@@ -9,10 +9,9 @@ export default function HomePage() {
     <div className="max-w-container-max mx-auto space-y-stack-lg">
       <WelcomeBanner />
 
-      <StatsGrid />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
         <div className="lg:col-span-2 space-y-gutter">
+          <StatsGrid />
           <LearningQueue />
           <WordOfDay />
         </div>

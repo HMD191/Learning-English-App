@@ -42,11 +42,28 @@ export default function QuizCard({
     Math.round((questionNumber / totalQuestions) * 100)
   );
 
-  const correctIndex = LETTERS.indexOf(data.rightAnswer);
-  const selectedLetter = selected !== null ? LETTERS[selected] : null;
+  const normalizeAnswer = (text: string) => text.trim().toLowerCase();
+
+  function getCorrectIndex() {
+    const normalizedRightAnswer = normalizeAnswer(data.rightAnswer);
+
+    const letterIndex = LETTERS.findIndex(
+      (letter) => normalizeAnswer(letter) === normalizedRightAnswer
+    );
+
+    if (letterIndex !== -1) {
+      return letterIndex;
+    }
+
+    return data.answerOptions.findIndex(
+      (option) => normalizeAnswer(option) === normalizedRightAnswer
+    );
+  }
+
+  const correctIndex = getCorrectIndex();
 
   const isMultipleChoiceCorrect =
-    selectedLetter !== null && selectedLetter === data.rightAnswer;
+    selected !== null && selected === correctIndex;
 
   const assembledWord = userAnswer.join("");
   const isCompleteWordCorrect = assembledWord === data.rightAnswer;
@@ -57,7 +74,7 @@ export default function QuizCard({
 
   const correctAnswerText = isCompleteWordMode
     ? data.rightAnswer
-    : data.answerOptions[correctIndex];
+    : data.answerOptions[correctIndex] || data.rightAnswer;
 
   function getQuestionTitle() {
     if (mode === "1Eng-4Vn-words") {
@@ -71,17 +88,17 @@ export default function QuizCard({
     return data.sentence.replace("____", "____");
   }
 
- return (
-  <div className="w-full max-w-4xl bg-white border border-outline-variant/70 rounded-3xl shadow-[0_8px_24px_rgba(31,41,55,0.05)] overflow-hidden">
-    <div className="p-5 md:p-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-7 gap-4">
+  return (
+    <div className="w-full max-w-4xl bg-white border border-outline-variant/70 rounded-3xl shadow-[0_8px_24px_rgba(31,41,55,0.05)] overflow-hidden">
+      <div className="p-5 md:p-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-7 gap-4">
           <div>
-            {/* <span className="inline-flex items-center rounded-full bg-primary-container px-3 py-1 text-label-sm font-bold text-primary">
-              {modeDescriptions[mode]}
-            </span> */}
-
-            <p className="mt-2 text-body-sm text-on-surface-variant">
+            <p className="-mt-1 text-[13px] leading-5 text-on-surface-variant/80">
               Question {questionNumber} of {totalQuestions}
+            </p>
+
+            <p className="mt-1 text-body-sm font-semibold text-on-surface-variant">
+              {modeInstructions[mode]}
             </p>
           </div>
 
@@ -100,38 +117,25 @@ export default function QuizCard({
         </div>
 
         <div className="text-center mb-5">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <h2 className="max-w-3xl text-[22px] leading-[30px] md:text-[26px] md:leading-[34px] font-bold tracking-[-0.025em] text-on-surface">
+          <div className="mb-3">
+            <h2 className="text-left text-[20px] leading-[28px] md:text-[24px] md:leading-[32px] font-semibold tracking-[-0.02em] text-on-surface">
               {getQuestionTitle()}
             </h2>
-
-            {(mode === "1Eng-4Vn-words" ||
-              mode === "complete-sentence-meaning") && (
-              <button
-                type="button"
-                onClick={() => onSpeak(data.sentence)}
-                className="w-11 h-11 flex items-center justify-center rounded-full bg-primary-container text-primary hover:bg-primary-fixed-dim transition-colors"
-                aria-label="Listen"
-              >
-                <span className="material-symbols-outlined">volume_up</span>
-              </button>
-            )}
           </div>
 
-          <p className="text-[15px] leading-6 text-on-surface-variant">
+          {/* <p className="text-[15px] leading-6 text-on-surface-variant">
             {modeInstructions[mode]}
-          </p>
+          </p> */}
 
           {isCompleteWordMode && (
             <div className="mt-8">
               <div
-                className={`inline-flex min-h-[64px] min-w-[260px] items-center justify-center rounded-2xl border-2 px-7 text-headline-md font-bold tracking-[0.25em] transition-all ${
-                  showResult
-                    ? isCompleteWordCorrect
-                      ? "bg-success-container border-success text-on-success-container"
-                      : "bg-error-container border-error text-on-error-container"
-                    : "bg-surface-container-low border-outline-variant text-on-surface"
-                }`}
+                className={`inline-flex min-h-[64px] min-w-[260px] items-center justify-center rounded-2xl border-2 px-7 text-headline-md font-bold tracking-[0.25em] transition-all ${showResult
+                  ? isCompleteWordCorrect
+                    ? "bg-success-container border-success text-on-success-container"
+                    : "bg-error-container border-error text-on-error-container"
+                  : "bg-surface-container-low border-outline-variant text-on-surface"
+                  }`}
               >
                 {assembledWord || "_____"}
               </div>
@@ -150,11 +154,10 @@ export default function QuizCard({
                   type="button"
                   onClick={() => onChoose(index)}
                   disabled={showResult}
-                  className={`w-14 h-14 rounded-2xl border text-headline-sm font-bold transition-all disabled:cursor-default ${
-                    isActive
-                      ? "bg-primary text-on-primary border-primary shadow-[0_8px_20px_rgba(66,85,255,0.2)]"
-                      : "bg-white border-outline-variant text-on-surface hover:border-primary hover:bg-primary-container"
-                  }`}
+                  className={`w-14 h-14 rounded-2xl border text-headline-sm font-bold transition-all disabled:cursor-default ${isActive
+                    ? "bg-primary text-on-primary border-primary shadow-[0_8px_20px_rgba(66,85,255,0.2)]"
+                    : "bg-white border-outline-variant text-on-surface hover:border-primary hover:bg-primary-container"
+                    }`}
                 >
                   {option}
                 </button>

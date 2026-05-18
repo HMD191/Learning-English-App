@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const navItems = [
   {
@@ -14,11 +15,11 @@ const navItems = [
     href: "/all-words",
     icon: "menu_book",
   },
-  {
-    label: "Notifications",
-    href: "/notifications",
-    icon: "notifications",
-  },
+  // {
+  //   label: "Notifications",
+  //   href: "/notifications",
+  //   icon: "notifications",
+  // },
   {
     label: "Learning",
     href: "/learning",
@@ -31,8 +32,20 @@ const navItems = [
   },
 ];
 
+
+
 export default function SideNav() {
   const pathname = usePathname();
+
+  const [username, setUsername] = useState("friend");
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("english-master-username");
+
+    if (savedName && savedName.trim()) {
+      setUsername(savedName);
+    }
+  }, []);
 
   return (
     <aside className="hidden md:flex flex-col h-screen w-64 bg-white border-r border-outline-variant/70 py-6 px-4 shrink-0">
@@ -71,16 +84,14 @@ export default function SideNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`group flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${
-                isActive
-                  ? "bg-primary-container text-primary font-bold"
-                  : "text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface"
-              }`}
+              className={`group flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${isActive
+                ? "bg-primary-container text-primary font-bold"
+                : "text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface"
+                }`}
             >
               <span
-                className={`material-symbols-outlined text-[22px] ${
-                  isActive ? "text-primary" : "text-on-surface-variant"
-                } group-hover:text-primary`}
+                className={`material-symbols-outlined text-[22px] ${isActive ? "text-primary" : "text-on-surface-variant"
+                  } group-hover:text-primary`}
                 style={
                   isActive
                     ? { fontVariationSettings: '"FILL" 1' }
@@ -114,7 +125,7 @@ export default function SideNav() {
 
           <div className="min-w-0">
             <p className="font-bold text-label-md text-on-surface truncate">
-              Inzy Cao
+              {username}
             </p>
             <p className="text-xs text-on-surface-variant">ID: 48291</p>
           </div>
