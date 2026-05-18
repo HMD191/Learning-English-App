@@ -113,7 +113,7 @@ export default function AllWordsHeader({
             )}
           </button>
 
-          <button
+          {/* <button
             type="button"
             className="flex items-center gap-2 bg-surface border border-outline-variant px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-all"
           >
@@ -121,7 +121,7 @@ export default function AllWordsHeader({
               sort
             </span>
             Sort
-          </button>
+          </button> */}
 
           <button
             type="button"

@@ -32,7 +32,7 @@ function createEmptyRow(): WordEntryRowValue {
 export default function NewWordForm() {
   const [rows, setRows] = useState<WordEntryRowValue[]>([
     createEmptyRow(),
-    createEmptyRow(),
+    // createEmptyRow(),
   ]);
 
   const [topics, setTopics] = useState<string[]>([]);
@@ -157,17 +157,17 @@ export default function NewWordForm() {
       currentRows.map((row) =>
         row.id === rowId
           ? {
-              ...row,
-              [field]: value,
-              status: "",
-            }
+            ...row,
+            [field]: value,
+            status: "",
+          }
           : row
       )
     );
   }
 
   function handleResetRows() {
-    setRows([createEmptyRow(), createEmptyRow()]);
+    setRows([createEmptyRow()]);
   }
 
   async function handleSubmit() {
@@ -181,11 +181,15 @@ export default function NewWordForm() {
 
       const updatedRows = await Promise.all(
         rows.map(async (row) => {
-          if (!row.english.trim() || !row.meaning.trim() || row.types.length === 0) {
+          if (
+            !row.english.trim() ||
+            !row.meaning.trim() ||
+            row.types.length === 0
+          ) {
             return {
               ...row,
-              status:
-                "Missing English Word, Meaning, or Word Type.",
+              status: "Missing English Word, Meaning, or Word Type.",
+              success: false,
             };
           }
 
@@ -214,23 +218,34 @@ export default function NewWordForm() {
 
             return {
               ...row,
-              status: data?.message || "Created successfully.",
+              status: "Created successfully.",
+              success: true,
             };
           } catch (error) {
             const message =
-              error instanceof Error
-                ? error.message
-                : "Create word failed.";
+              error instanceof Error ? error.message : "Create word failed.";
 
             return {
               ...row,
               status: message,
+              success: false,
             };
           }
         })
       );
 
-      setRows(updatedRows);
+      const failedRows = updatedRows.filter(
+        (row) =>
+          !row.status?.toLowerCase().includes("success") &&
+          !row.status?.toLowerCase().includes("created")
+      );
+
+      if (failedRows.length > 0) {
+        setRows(failedRows);
+        return;
+      }
+
+      setRows([createEmptyRow()]);
     } finally {
       setIsSubmitting(false);
     }
@@ -244,7 +259,7 @@ export default function NewWordForm() {
             {/* <span className="material-symbols-outlined text-primary">
               edit_note
             </span> */}
-           Create New Words
+            Create New Words
           </h3>
 
           {isLoadingTopics && (
