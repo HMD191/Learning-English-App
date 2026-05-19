@@ -63,7 +63,7 @@ export default function LearningQueue() {
                   `"${lesson.title}" is not available yet. This lesson will be supported in a future update.`
                 )
               }
-              className="text-left bg-white p-stack-md rounded-xl border border-surface-variant shadow-sm hover:translate-y-[-4px] transition-transform cursor-pointer"
+              className="text-left bg-white p-4 2xl:p-stack-md rounded-xl border border-surface-variant shadow-sm hover:translate-y-[-4px] transition-transform cursor-pointer"
             >
               <div className="flex justify-between items-start mb-4">
                 <span
@@ -77,7 +77,7 @@ export default function LearningQueue() {
                 </span>
               </div>
 
-              <h4 className="font-headline-sm text-headline-sm mb-2 text-on-surface">
+              <h4 className="text-[22px] leading-7 font-bold mb-2 text-on-surface">
                 {lesson.title}
               </h4>
 

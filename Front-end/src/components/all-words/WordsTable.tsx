@@ -33,8 +33,8 @@ export default function WordsTable({
   onOpenCreateTopic,
 }: WordsTableProps) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[1040px] text-left border-collapse">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-[860px] text-left border-collapse">
         <thead>
           <tr className="bg-surface-container-low border-b border-outline-variant/70">
             <th className="px-4 py-3 text-[12px] leading-4 font-semibold text-on-surface-variant/70">

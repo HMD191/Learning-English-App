@@ -38,6 +38,7 @@ export default function NewWordForm() {
   const [topics, setTopics] = useState<string[]>([]);
   const [isLoadingTopics, setIsLoadingTopics] = useState(false);
   const [topicError, setTopicError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isCreateTopicOpen, setIsCreateTopicOpen] = useState(false);
@@ -137,6 +138,8 @@ export default function NewWordForm() {
   }
 
   function handleAddRow() {
+    setSuccessMessage("");
+
     setRows((currentRows) => [...currentRows, createEmptyRow()]);
   }
 
@@ -167,7 +170,16 @@ export default function NewWordForm() {
   }
 
   function handleResetRows() {
+    setSuccessMessage("");
     setRows([createEmptyRow()]);
+  }
+
+  function showSuccessMessage(message: string) {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
   }
 
   async function handleSubmit() {
@@ -240,12 +252,35 @@ export default function NewWordForm() {
           !row.status?.toLowerCase().includes("created")
       );
 
+      // if (failedRows.length > 0) {
+      //   setRows(failedRows);
+      //   return;
+      // }
       if (failedRows.length > 0) {
+        const successCount = updatedRows.length - failedRows.length;
+
         setRows(failedRows);
+
+        if (successCount > 0) {
+          showSuccessMessage(
+            successCount === 1
+              ? "Created 1 word successfully."
+              : `Created ${successCount} words successfully.`
+          );
+        }
+
         return;
       }
 
+      const successCount = updatedRows.length - failedRows.length;
+
       setRows([createEmptyRow()]);
+
+      showSuccessMessage(
+        successCount === 1
+          ? "Created 1 word successfully."
+          : `Created ${successCount} words successfully.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -263,20 +298,25 @@ export default function NewWordForm() {
           </h3>
 
           {isLoadingTopics && (
-  <div className="mt-2 flex items-center gap-1.5 text-[13px] text-on-surface-variant">
-    <span>Loading topics</span>
+            <div className="mt-2 flex items-center gap-1.5 text-[13px] text-on-surface-variant">
+              <span>Loading topics</span>
 
-    <span className="flex items-center gap-0.5">
-      <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
-      <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
-      <span className="h-1 w-1 rounded-full bg-primary animate-bounce" />
-    </span>
-  </div>
-)}
+              <span className="flex items-center gap-0.5">
+                <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+                <span className="h-1 w-1 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+                <span className="h-1 w-1 rounded-full bg-primary animate-bounce" />
+              </span>
+            </div>
+          )}
 
           {topicError && (
             <p className="text-body-sm text-error mt-2">
               {topicError}
+            </p>
+          )}
+          {successMessage && (
+            <p className="text-body-sm text-success mt-2">
+              {successMessage}
             </p>
           )}
         </div>

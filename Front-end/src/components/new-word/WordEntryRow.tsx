@@ -105,8 +105,8 @@ export default function WordEntryRow({
         </button>
       </div>
 
-      <div className="flex flex-wrap md:flex-nowrap gap-3 items-start">
-        <div className="flex-1 min-w-[150px] space-y-1">
+      <div className="flex flex-nowrap gap-3 items-start w-full min-w-0">
+        <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             English Word
           </label>
@@ -114,13 +114,13 @@ export default function WordEntryRow({
           <input
             value={value.english}
             onChange={(event) => onChange("english", event.target.value)}
-            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Word"
             type="text"
           />
         </div>
 
-        <div className="flex-1 min-w-[150px] space-y-1">
+        <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             Word Type
           </label>
@@ -129,7 +129,7 @@ export default function WordEntryRow({
             <button
               type="button"
               onClick={() => setIsTypeDropdownOpen((isOpen) => !isOpen)}
-              className={`w-full h-11 bg-surface-container-low border rounded-xl px-4 pr-10 text-[15px] font-normal text-left cursor-pointer form-input-focus ${
+              className={`w-full h-11 bg-surface-container-low border rounded-xl px-3 pr-10 text-[14px] font-normal text-left cursor-pointer form-input-focus ${
                 isTypeDropdownOpen
                   ? "border-primary-container"
                   : "border-outline-variant"
@@ -176,7 +176,7 @@ export default function WordEntryRow({
           </div>
         </div>
 
-        <div className="flex-1 min-w-[150px] space-y-1">
+        <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             Synonyms
           </label>
@@ -184,13 +184,13 @@ export default function WordEntryRow({
           <input
             value={value.synonyms}
             onChange={(event) => onChange("synonyms", event.target.value)}
-           className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
-            placeholder="synonyms"
+           className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            placeholder="Synonyms"
             type="text"
           />
         </div>
 
-        <div className="flex-1 min-w-[180px] space-y-1">
+        <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             Meaning
           </label>
@@ -198,13 +198,13 @@ export default function WordEntryRow({
           <input
             value={value.meaning}
             onChange={(event) => onChange("meaning", event.target.value)}
-            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-4 text-[15px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Definition"
             type="text"
           />
         </div>
 
-        <div className="flex-1 min-w-[180px] space-y-1">
+        <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             Topic
           </label>
@@ -213,7 +213,7 @@ export default function WordEntryRow({
             <select
               value={value.topic}
               onChange={(event) => onChange("topic", event.target.value)}
-              className="w-full h-11 appearance-none bg-surface-container-low border border-outline-variant rounded-xl px-4 pr-10 text-[15px] font-normal text-on-surface form-input-focus cursor-pointer"
+              className="w-full h-11 appearance-none bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface form-input-focus cursor-pointer"
             >
               <option value="" disabled>
                 Select Topic
