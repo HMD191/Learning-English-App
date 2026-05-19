@@ -22,9 +22,9 @@ export default function StatsGrid() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white p-stack-md rounded-xl border border-surface-variant shadow-sm flex items-center gap-4"
+          className="bg-white p-4 2xl:p-stack-md rounded-xl border border-surface-variant shadow-sm flex items-center gap-4"
         >
-          <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary">
+          <div className="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary">
             <span className="material-symbols-outlined">{stat.icon}</span>
           </div>
 
@@ -32,7 +32,7 @@ export default function StatsGrid() {
             <p className="text-on-surface-variant font-label-sm text-label-sm">
               {stat.label}
             </p>
-            <p className="text-headline-sm font-headline-sm">{stat.value}</p>
+            <p className="text-[18px] leading-7 font-bold text-on-surface">{stat.value}</p>
           </div>
         </div>
       ))}
