@@ -1,7 +1,7 @@
 import Link from "next/link";
 export default function WeeklyGoalPanel() {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <section className="hidden md:grid grid grid-cols-1 lg:grid-cols-12 gap-4">
       <div className="lg:col-span-8 bg-white rounded-2xl border border-outline-variant/70 p-5 relative overflow-hidden flex flex-col justify-center min-h-[150px] shadow-[0_2px_10px_rgba(31,41,55,0.04)]">
         <div className="relative z-10 max-w-md">
           <h3 className="text-[18px] leading-6 font-bold text-on-surface mb-1">

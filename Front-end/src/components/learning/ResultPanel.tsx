@@ -20,7 +20,7 @@ export default function ResultPanel({
   return (
     <>
       <div
-        className={`rounded-2xl p-5 mb-5 border ${isCorrect
+        className={`rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-5 border ${isCorrect
           ? "bg-success-container border-success/30"
           : "bg-error-container border-error/30"
           }`}
@@ -28,11 +28,11 @@ export default function ResultPanel({
         <div>
 
           <div className="flex-1 min-w-0">
-            <p className="text-label-md font-bold text-on-surface uppercase tracking-[0.08em]">
+            <p className="text-[13px] md:text-label-md font-bold text-on-surface uppercase tracking-[0.06em] md:tracking-[0.08em]">
               {isCorrect ? "Correct" : "Review answer"}
             </p>
 
-            <p className="mt-2 text-body-sm text-on-surface-variant leading-relaxed">
+            <p className="mt-1 md:mt-2 text-[12px] md:text-body-sm text-on-surface-variant leading-5 md:leading-relaxed">
               {isCorrect
                 ? "Nice work. You picked the right answer."
                 : `Not quite. The correct answer is "${correctAnswerText}".`}
@@ -53,7 +53,7 @@ export default function ResultPanel({
 
             {explanation && (
               <div
-                className="mt-3 max-h-[96px] overflow-y-auto pr-2 text-[14px] leading-6 text-on-surface-variant"
+                className="mt-2 md:mt-3 max-h-[76px] md:max-h-[96px] overflow-y-auto pr-2 text-[12px] md:text-[14px] leading-5 md:leading-6 text-on-surface-variant"
                 dangerouslySetInnerHTML={{
                   __html: marked.parse(explanation),
                 }}
@@ -63,23 +63,23 @@ export default function ResultPanel({
         </div>
       </div>
 
-      <div className="pt-5 border-t border-outline-variant/70 flex justify-between items-center">
+      <div className="pt-3 md:pt-5 border-t border-outline-variant/70 flex justify-between items-center">
         <button
           type="button"
           onClick={() => setIsReportPopupOpen(true)}
-          className="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-md transition-colors"
+          className="flex items-center gap-1.5 md:gap-2 text-[12px] md:text-label-md text-on-surface-variant hover:text-primary font-label-md transition-colors"
         >
-          <span className="material-symbols-outlined text-[20px]">flag</span>
+          <span className="material-symbols-outlined text-[17px] md:text-[20px]">flag</span>
           Report
         </button>
 
         <button
           type="button"
           onClick={onNext}
-          className="bg-primary hover:bg-on-primary-container text-white px-7 py-3 rounded-full font-label-md shadow-[0_8px_20px_rgba(66,85,255,0.22)] active:scale-[0.98] transition-all flex items-center gap-2"
+          className="bg-primary hover:bg-on-primary-container text-white px-4 md:px-7 py-2 md:py-3 rounded-full text-[13px] md:text-label-md font-label-md shadow-[0_8px_20px_rgba(66,85,255,0.22)] active:scale-[0.98] transition-all flex items-center gap-1.5 md:gap-2"
         >
           Next question
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-[17px] md:text-[20px]">
             arrow_forward
           </span>
         </button>

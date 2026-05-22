@@ -34,7 +34,7 @@ export default function LearningQueue() {
 
   return (
     <>
-      <div className="space-y-gutter">
+      <div className="hidden md:grid space-y-gutter">
         <div className="flex items-center justify-between">
           <h3 className="font-headline-sm text-headline-sm text-on-surface">
             Up Next

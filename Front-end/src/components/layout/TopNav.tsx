@@ -6,14 +6,14 @@ export default function TopNav() {
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   return (
     <>
-      <header className="grid items-center px-gutter lg:px-margin-desktop py-3 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/70 grid-cols-2 lg:grid-cols-12">
+      <header className="grid grid-cols-[1fr_auto] items-center px-4 py-2 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/70 lg:px-margin-desktop lg:py-3 lg:grid-cols-12">
         <div className="flex items-center justify-start lg:col-span-1">
-          <span className="md:hidden font-bold text-primary text-lg">
+          <span className="md:hidden font-bold text-primary text-base">
             English Master
           </span>
         </div>
 
-        <div className="flex items-center justify-center lg:col-span-8">
+        <div className="hidden lg:flex items-center justify-center lg:col-span-8">
           <div className="relative hidden lg:block w-full max-w-[760px]">
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-outline text-[21px]">
               search
@@ -32,7 +32,7 @@ export default function TopNav() {
           <button
             type="button"
             onClick={() => setIsGiftOpen(true)}
-            className="relative h-10 w-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
+            className="relative h-9 w-9 md:h-10 md:w-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
             aria-label="Notifications"
           >
             <span className="material-symbols-outlined">notifications</span>
@@ -42,7 +42,7 @@ export default function TopNav() {
           <img
             src="/image/ava.jpg"
             alt="User avatar"
-            className="w-9 h-9 rounded-full border border-outline-variant object-cover bg-surface-container-low"
+            className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-outline-variant object-cover bg-surface-container-low"
           />
         </div>
       </header>

@@ -34,7 +34,7 @@ export default function Achievements() {
 
   return (
     <>
-      <div className="bg-white p-stack-md rounded-xl border border-surface-variant shadow-sm">
+      <div className="hidden md:grid bg-white p-stack-md rounded-xl border border-surface-variant shadow-sm">
         <h3 className="font-label-md text-label-md font-bold mb-4">
           Achievements
         </h3>
