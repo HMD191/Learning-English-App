@@ -20,31 +20,30 @@ export default function AnswerOption({
 }: AnswerOptionProps) {
   const hasPlayedSoundRef = useRef(false);
   let buttonClass =
-    "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-white border-outline-variant/70 hover:border-primary/30 hover:bg-primary-container/20 disabled:cursor-default";
+    "group flex items-center gap-2 md:gap-3 px-2 md:px-4 py-1.5 md:py-3 rounded-xl md:rounded-2xl text-left transition-all border bg-white border-outline-variant/70 hover:border-primary/30 hover:bg-primary-container/20 disabled:cursor-default";
 
   let labelClass =
-    "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-surface-container-low text-on-surface-variant font-semibold text-[18px] transition-colors";
-
+    "w-8 h-8 md:w-12 md:h-12 shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-surface-container-low text-on-surface-variant font-semibold text-[13px] md:text-[18px] transition-colors";
   let icon: string | null = null;
   let iconClass = "";
 
   if (isCorrect) {
     buttonClass =
-      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#eef9f1] border-[#8fd3a7] shadow-none disabled:cursor-default";
+      "group flex items-center gap-2 md:gap-3 px-2 md:px-4 py-1.5 md:py-3 rounded-xl md:rounded-2xl text-left transition-all border bg-[#eef9f1] border-[#8fd3a7] shadow-none disabled:cursor-default";
     labelClass =
-      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#cfeedd] text-[#1f8a55] font-semibold text-[18px]";
+      "w-8 h-8 md:w-12 md:h-12 shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-[#cfeedd] text-[#1f8a55] font-semibold text-[13px] md:text-[18px]";
 
   } else if (isWrong) {
     buttonClass =
-      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#fff2f0] border-[#f2aaa2] shadow-none disabled:cursor-default";
+      "group flex items-center gap-2 md:gap-3 px-2 md:px-4 py-1.5 md:py-3 rounded-xl md:rounded-2xl text-left transition-all border bg-[#fff2f0] border-[#f2aaa2] shadow-none disabled:cursor-default";
     labelClass =
-      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#ffd9d4] text-[#d05c50] font-semibold text-[18px]";
+      "w-8 h-8 md:w-12 md:h-12 shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-[#ffd9d4] text-[#d05c50] font-semibold text-[13px] md:text-[18px]";
 
   } else if (isSelected) {
     buttonClass =
-      "group flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border bg-[#eef1ff] border-[#b8c2ff] shadow-none disabled:cursor-default";
+      "group flex items-center gap-2 md:gap-3 px-2 md:px-4 py-1.5 md:py-3 rounded-xl md:rounded-2xl text-left transition-all border bg-[#eef1ff] border-[#b8c2ff] shadow-none disabled:cursor-default";
     labelClass =
-      "w-12 h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#dce1ff] text-primary font-semibold text-[18px]";
+      "w-8 h-8 md:w-12 md:h-12 shrink-0 flex items-center justify-center rounded-2xl bg-[#dce1ff] text-primary font-semibold text-[13px] md:text-[18px]";
   }
 
   useEffect(() => {
@@ -86,13 +85,13 @@ export default function AnswerOption({
         <img
           src="/image/like.png"
           alt="Correct"
-          className="h-12 w-12 object-contain shrink-0"
+          className="h-9 w-9 md:h-12 md:w-12 object-contain shrink-0"
         />
       ) : isWrong ? (
         <img
           src="/image/wrong.png"
           alt="Wrong"
-          className="h-12 w-12 object-contain shrink-0"
+          className="h-9 w-9 md:h-12 md:w-12 object-contain shrink-0"
         />
       ) : (
         <span className={labelClass}>{label}</span>
@@ -100,8 +99,7 @@ export default function AnswerOption({
       {/* </span> */}
 
       <div className="flex-grow min-w-0">
-        <p className="text-[15px] leading-6 font-medium text-on-surface">
-          {option}
+        <p className="text-[12px] md:text-[15px] leading-4 md:leading-6 font-medium text-on-surface">          {option}
         </p>
       </div>
 

@@ -178,8 +178,7 @@ async function handleNextQuestion() {
   }
 
   return (
-  <div className="max-w-container-max mx-auto flex flex-col items-center px-0">
-    {/* <LearningHeader /> */}
+<div className="max-w-container-max mx-auto min-h-[calc(100vh-140px)] flex flex-col justify-center items-center px-3 md:px-0 pb-24 md:pb-0">    {/* <LearningHeader /> */}
 
     {errorMessage && (
       <div className="w-full max-w-5xl mb-4 rounded-2xl border border-error-container bg-error-container/60 p-4 text-error">

@@ -289,11 +289,10 @@ export default function NewWordForm() {
   return (
     <>
       <div className="bg-surface shadow-md rounded-xl border border-outline-variant overflow-hidden">
-        <div className="p-stack-lg border-b border-outline-variant bg-surface-container-lowest">
-          <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
-            {/* <span className="material-symbols-outlined text-primary">
-              edit_note
-            </span> */}
+        {/* <div className="p-stack-lg border-b border-outline-variant bg-surface-container-lowest">
+          <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2"> */}
+          <div className="p-4 md:p-stack-lg border-b border-outline-variant bg-surface-container-lowest">
+  <h3 className="font-headline-sm text-[20px] md:text-headline-sm text-on-surface flex items-center gap-2">
             Create New Words
           </h3>
 
@@ -321,7 +320,8 @@ export default function NewWordForm() {
           )}
         </div>
 
-        <div className="p-stack-lg space-y-stack-md">
+        {/* <div className="p-stack-lg space-y-stack-md"> */}
+        <div className="p-4 md:p-stack-lg space-y-stack-md">
           <div className="space-y-stack-md">
             {rows.map((row, index) => (
               <WordEntryRow
@@ -343,19 +343,22 @@ export default function NewWordForm() {
           <button
             type="button"
             onClick={handleAddRow}
-            className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-outline-variant rounded-xl text-primary font-bold hover:bg-primary-container/10 transition-colors"
-          >
+            // className="flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-outline-variant rounded-xl text-primary font-bold hover:bg-primary-container/10 transition-colors"
+         className="flex items-center justify-center gap-2 w-full py-3 md:py-4 border-2 border-dashed border-outline-variant rounded-xl text-primary font-bold hover:bg-primary-container/10 transition-colors"
+         >
             <span className="material-symbols-outlined">add_circle</span>
             Add Row
           </button>
         </div>
 
-        <div className="p-stack-lg bg-surface-container-low flex justify-end items-center gap-stack-md">
+        {/* <div className="p-stack-lg bg-surface-container-low flex justify-end items-center gap-stack-md"> */}
+          <div className="p-4 md:p-stack-lg bg-surface-container-low flex justify-end items-center gap-3">
           <button
             type="button"
             onClick={handleResetRows}
             disabled={isSubmitting}
-            className="px-6 py-2.5 rounded-lg font-bold text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            // className="px-6 py-2.5 rounded-lg font-bold text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 md:px-6 py-2 rounded-lg font-bold text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
@@ -364,7 +367,8 @@ export default function NewWordForm() {
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="px-stack-lg py-2.5 bg-primary text-on-primary rounded-lg font-bold shadow-sm hover:opacity-90 transition-opacity active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            // className="px-stack-lg py-2.5 bg-primary text-on-primary rounded-lg font-bold shadow-sm hover:opacity-90 transition-opacity active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-5 md:px-stack-lg py-2 bg-primary text-on-primary rounded-lg font-bold shadow-sm hover:opacity-90 transition-opacity active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Creating..." : "Create"}
           </button>

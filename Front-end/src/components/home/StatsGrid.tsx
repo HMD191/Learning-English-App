@@ -18,7 +18,7 @@ export default function StatsGrid() {
   ];
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <section className="hidden md:grid grid grid-cols-1 md:grid-cols-3 gap-gutter">
       {stats.map((stat) => (
         <div
           key={stat.label}

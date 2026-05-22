@@ -22,7 +22,7 @@ export default function LearningProgress() {
 
   return (
     <>
-      <div className="bg-white rounded-xl border border-surface-variant shadow-sm overflow-hidden">
+      <div className="hidden md:grid bg-white rounded-xl border border-surface-variant shadow-sm overflow-hidden">
         <div className="p-stack-md bg-surface-container-low border-b border-surface-variant">
           <h3 className="font-headline-sm text-headline-sm">
             Learning Progress

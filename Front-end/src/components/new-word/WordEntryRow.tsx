@@ -78,7 +78,8 @@ export default function WordEntryRow({
     value.status?.toLowerCase().includes("created");
 
   return (
-    <div className="pt-4 px-5 pb-5 rounded-xl bg-surface border border-outline-variant shadow-sm space-y-3">
+    // <div className="pt-4 px-5 pb-5 rounded-xl bg-surface border border-outline-variant shadow-sm space-y-3">
+      <div className="pt-3 px-3 pb-4 md:pt-4 md:px-5 md:pb-5 rounded-lg bg-surface border border-outline-variant shadow-sm space-y-3">
       <div className="flex justify-between items-center border-b border-outline-variant pb-3">
         <h4 className="text-label-sm font-bold uppercase text-outline">
            {index + 1}
@@ -105,7 +106,10 @@ export default function WordEntryRow({
         </button>
       </div>
 
-      <div className="flex flex-nowrap gap-3 items-start w-full min-w-0">
+      {/* <div className="flex flex-nowrap gap-3 items-start w-full min-w-0"> */}
+        {/* <div className="grid grid-cols-2 lg:flex lg:flex-nowrap gap-3 items-start w-full min-w-0"></div> */}
+        <div className="grid grid-cols-2 lg:flex lg:flex-nowrap gap-2  md:gap-3 items-start w-full min-w-0">
+        
         <div className="flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             English Word
@@ -114,7 +118,7 @@ export default function WordEntryRow({
           <input
             value={value.english}
             onChange={(event) => onChange("english", event.target.value)}
-            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            className="w-full h-9 md:h-11 bg-surface-container-low border border-outline-variant rounded-lg px-3 text-[13px] md:text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Word"
             type="text"
           />
@@ -129,7 +133,7 @@ export default function WordEntryRow({
             <button
               type="button"
               onClick={() => setIsTypeDropdownOpen((isOpen) => !isOpen)}
-              className={`w-full h-11 bg-surface-container-low border rounded-xl px-3 pr-10 text-[14px] font-normal text-left cursor-pointer form-input-focus ${
+              className={`w-full h-9 md:h-11 bg-surface-container-low border rounded-lg px-3 pr-10 text-[13px] md:text-[14px] font-normal text-left cursor-pointer form-input-focus ${
                 isTypeDropdownOpen
                   ? "border-primary-container"
                   : "border-outline-variant"
@@ -138,8 +142,8 @@ export default function WordEntryRow({
               <span
                 className={
                   selectedTypes.length > 0
-                    ? "text-on-surface"
-                    : "text-on-surface-variant/60"
+                    ? "block truncate text-on-surface" 
+                    : "block truncate text-on-surface-variant/60"
                 }
               >
                 {selectedTypeLabels}
@@ -184,7 +188,7 @@ export default function WordEntryRow({
           <input
             value={value.synonyms}
             onChange={(event) => onChange("synonyms", event.target.value)}
-           className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+           className="w-full h-9 md:h-11 bg-surface-container-low border border-outline-variant rounded-lg px-3 text-[13px] md:text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Synonyms"
             type="text"
           />
@@ -198,13 +202,14 @@ export default function WordEntryRow({
           <input
             value={value.meaning}
             onChange={(event) => onChange("meaning", event.target.value)}
-            className="w-full h-11 bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
+            className="w-full h-9 md:h-11 bg-surface-container-low border border-outline-variant rounded-lg px-3 text-[13px] md:text-[14px] font-normal text-on-surface placeholder:text-on-surface-variant/55 form-input-focus"
             placeholder="Definition"
             type="text"
           />
         </div>
 
-        <div className="flex-[1.05] min-w-0 space-y-1">
+        {/* <div className="flex-[1.05] min-w-0 space-y-1"> */}
+          <div className="col-span-2 lg:col-auto lg:flex-[1.05] min-w-0 space-y-1">
           <label className="text-label-sm text-on-surface-variant font-medium">
             Topic
           </label>
@@ -213,7 +218,7 @@ export default function WordEntryRow({
             <select
               value={value.topic}
               onChange={(event) => onChange("topic", event.target.value)}
-              className="w-full h-11 appearance-none bg-surface-container-low border border-outline-variant rounded-xl px-3 text-[14px] font-normal text-on-surface form-input-focus cursor-pointer"
+              className="w-full h-9 md:h-11 appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-3 text-[13px] md:text-[14px] font-normal text-on-surface form-input-focus cursor-pointer"
             >
               <option value="" disabled>
                 Select Topic
@@ -231,7 +236,7 @@ export default function WordEntryRow({
             </span>
           </div>
 
-          <div className="mt-1 flex justify-end gap-3 relative z-20 pointer-events-auto">
+          <div className="mt-1 flex justify-end gap-2 relative z-20 pointer-events-auto">
             <button
               type="button"
               onClick={onOpenCreateTopic}
@@ -243,7 +248,7 @@ export default function WordEntryRow({
             <button
               type="button"
               onClick={onOpenManageTopics}
-              className="relative z-20 cursor-pointer text-[10px] text-primary hover:underline whitespace-nowrap pointer-events-auto"
+              className="relative z-20 cursor-pointer text-[9px] md:text-[10px]  text-primary hover:underline whitespace-nowrap pointer-events-auto"
             >
               Manage Topics
             </button>
