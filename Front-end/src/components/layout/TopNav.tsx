@@ -20,8 +20,7 @@ export default function TopNav() {
             </span>
 
             <input
-              className="w-full h-11 pl-11 pr-4 bg-surface-container-low border border-transparent rounded-full text-label-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
-              placeholder="Search words or lessons..."
+              className="w-full h-11 pl-11 pr-4 bg-surface-container-low border border-transparent rounded-full text-label-md font-normal text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all" placeholder="Search words or lessons..."
               type="text"
             />
           </div>
