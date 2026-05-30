@@ -3,7 +3,7 @@ import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { LearningModeService } from '@modules/learning-mode/learning-mode.service';
 
 import { Difficulty } from '@src/constants/constants';
-import { capitalizeFirstLetter } from '@src/common/helper';
+import { capitalizeFirstLetter, string2Strings } from '@src/common/helper';
 
 @Controller('learning')
 export class LearningModeController {
@@ -21,6 +21,8 @@ export class LearningModeController {
     const parsedDifficulty =
       Difficulty[normalizedDifficulty as keyof typeof Difficulty] ??
       Difficulty.Hard;
+
+    categories = string2Strings(categories);
 
     return await this.learningModeService.getFillInTheBlankQuestion(
       'meaning',
@@ -42,6 +44,8 @@ export class LearningModeController {
       Difficulty[normalizedDifficulty as keyof typeof Difficulty] ??
       Difficulty.Hard;
 
+    categories = string2Strings(categories);
+
     return await this.learningModeService.getFillInTheBlankQuestion(
       'wordKind',
       parsedDifficulty,
@@ -53,6 +57,8 @@ export class LearningModeController {
   async mutiChoiceEn2Vn(
     @Query('categories') categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
+    categories = string2Strings(categories);
+
     return await this.learningModeService.mutiChoiceEn2Vn(categories);
   }
 
@@ -60,6 +66,8 @@ export class LearningModeController {
   async mutiChoiceVn2En(
     @Query('categories') categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
+    categories = string2Strings(categories);
+
     return await this.learningModeService.mutiChoiceVn2En(categories);
   }
 
@@ -67,6 +75,8 @@ export class LearningModeController {
   async completeWord(
     @Query('categories') categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
-    return await this.learningModeService.completeWord();
+    categories = string2Strings(categories);
+
+    return await this.learningModeService.completeWord(categories);
   }
 }

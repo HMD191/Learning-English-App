@@ -5,3 +5,10 @@ export function capitalizeFirstLetter(str: string): string {
 
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function string2Strings(data?: string[]): string[] {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+
+  return [data];
+}
