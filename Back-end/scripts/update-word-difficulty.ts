@@ -21,6 +21,9 @@ async function main() {
     console.log(`Found ${words.length} words`);
 
     for (const word of words) {
+      if (word.difficulty !== 0) {
+        continue;
+      }
       try {
         await axios.put(`${HOST}/words`, {
           engMeaning: word.engMeaning,

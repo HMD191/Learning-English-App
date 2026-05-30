@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Words } from '@database/entities/word.entity';
 import { Repository } from 'typeorm';
 import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
-import { Difficulty } from '@constants/constants';
+import {
+  Difficulty,
+  DifficultyLabel,
+  DifficultyNumber,
+} from '@constants/constants';
 import { capitalizeFirstLetter } from '@src/common/helper';
 import { ExternalAIModelService } from '../external-AI-model/external-AI-model.service';
 import {
@@ -25,7 +29,11 @@ export class LearningModeService {
     categories?: string[],
   ): Promise<ReturnQuestionAnswerDto> {
     console.log('difficulty:', difficulty);
-    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+    const queryBuilder = this.wordRepository
+      .createQueryBuilder('words')
+      .where('words.difficulty <= :difficulty', {
+        difficulty: DifficultyNumber[difficulty],
+      });
 
     if (categories && categories.length > 0) {
       queryBuilder
@@ -46,10 +54,16 @@ export class LearningModeService {
     let prompt: string;
     if (promptOption === 'meaning') {
       console.log('Using meaning choice prompt');
-      prompt = getPromptMeaningChoice(word.engMeaning, difficulty);
+      prompt = getPromptMeaningChoice(
+        word.engMeaning,
+        DifficultyLabel[difficulty],
+      );
     } else {
       console.log('Using word kind choice prompt');
-      prompt = getPromptWordKindChoice(word.engMeaning, difficulty);
+      prompt = getPromptWordKindChoice(
+        word.engMeaning,
+        DifficultyLabel[difficulty],
+      );
     }
 
     try {
@@ -64,8 +78,13 @@ export class LearningModeService {
 
   async mutiChoiceEn2Vn(
     categories?: string[],
+    difficulty: Difficulty = Difficulty.Hard,
   ): Promise<ReturnQuestionAnswerDto> {
-    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+    const queryBuilder = this.wordRepository
+      .createQueryBuilder('words')
+      .where('words.difficulty <= :difficulty', {
+        difficulty: DifficultyNumber[difficulty],
+      });
 
     if (categories && categories.length > 0) {
       queryBuilder
@@ -124,8 +143,13 @@ export class LearningModeService {
 
   async mutiChoiceVn2En(
     categories?: string[],
+    difficulty: Difficulty = Difficulty.Hard,
   ): Promise<ReturnQuestionAnswerDto> {
-    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+    const queryBuilder = this.wordRepository
+      .createQueryBuilder('words')
+      .where('words.difficulty <= :difficulty', {
+        difficulty: DifficultyNumber[difficulty],
+      });
 
     if (categories && categories.length > 0) {
       queryBuilder
@@ -177,8 +201,15 @@ export class LearningModeService {
     };
   }
 
-  async completeWord(categories?: string[]): Promise<ReturnQuestionAnswerDto> {
-    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+  async completeWord(
+    categories?: string[],
+    difficulty: Difficulty = Difficulty.Hard,
+  ): Promise<ReturnQuestionAnswerDto> {
+    const queryBuilder = this.wordRepository
+      .createQueryBuilder('words')
+      .where('words.difficulty <= :difficulty', {
+        difficulty: DifficultyNumber[difficulty],
+      });
 
     console.log('categories:', categories);
 
