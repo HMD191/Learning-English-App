@@ -22,6 +22,8 @@ export class LearningModeController {
       Difficulty[normalizedDifficulty as keyof typeof Difficulty] ??
       Difficulty.Hard;
 
+    console.log('parsedDifficulty: ', parsedDifficulty);
+
     categories = string2Strings(categories);
 
     return await this.learningModeService.getFillInTheBlankQuestion(

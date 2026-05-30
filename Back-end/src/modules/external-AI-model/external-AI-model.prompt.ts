@@ -1,4 +1,4 @@
-import { Difficulty } from '@src/constants/constants';
+import { Difficulty, DifficultyLabel } from '@src/constants/constants';
 
 function getPromptEvaluateWordDifficulty(word: string): string {
   return `Evaluate the difficulty level of the word "${word.toLowerCase()}".
@@ -20,7 +20,7 @@ function getPromptEvaluateWordDifficulty(word: string): string {
     `;
 }
 
-function getPromptMeaningChoice(word: string, difficulty: Difficulty): string {
+function getPromptMeaningChoice(word: string, difficulty: string): string {
   return `Generate a sentence with a blank ("___" present for blank) and 4 random answer options, where the true answer to fill in the blank must be exactly the word "${word.toLowerCase()}". 
     The sentence should be suitable for ${difficulty} level.
     Generate an explanation in vietnamese for correct answer.
@@ -35,7 +35,7 @@ function getPromptMeaningChoice(word: string, difficulty: Difficulty): string {
     `;
 }
 
-function getPromptWordKindChoice(word: string, difficulty: Difficulty): string {
+function getPromptWordKindChoice(word: string, difficulty: string): string {
   return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options to fill in the blank corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb which based on the word "${word.toLowerCase()}" (include original word).
     The options must be different from each other in spelling and must not be labeled with their word kinds.
     If cannot be generated enough valid words from the word "${word.toLowerCase()}", use unrelated words that fit the required parts of speech.
