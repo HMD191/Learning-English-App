@@ -15,11 +15,7 @@ const navItems = [
     href: "/all-words",
     icon: "menu_book",
   },
-  // {
-  //   label: "Notifications",
-  //   href: "/notifications",
-  //   icon: "notifications",
-  // },
+  
   {
     label: "Learning",
     href: "/learning",

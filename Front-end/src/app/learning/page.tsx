@@ -1,5 +1,6 @@
-import LearningPage from "@/components/learning/LearningPage";
 
-export default function Page() {
-  return <LearningPage />;
+import LearningSetupPage from "@/components/learning/LearningSetupPage";
+
+export default function LearningPageRoute() {
+  return <LearningSetupPage />;
 }
