@@ -13,6 +13,7 @@ function getPromptEvaluateWordDifficulty(word: string): string {
       - How common the word is in everyday English.
       - How frequently native speakers use it in daily conversations.
       - How likely is an IELTS learner to know the word
+      - Complexity of spelling and word length.
 
       More common and useful words should receive lower scores.
       Return only the integer and nothing else.
