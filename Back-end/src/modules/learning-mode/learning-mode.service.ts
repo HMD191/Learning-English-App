@@ -6,6 +6,7 @@ import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { Difficulty } from '@constants/constants';
 import { GoogleGenAI } from '@google/genai';
 import { ConfigService } from '@nestjs/config';
+import { capitalizeFirstLetter } from '@src/common/helper';
 
 Injectable();
 export class LearningModeService {
@@ -64,9 +65,7 @@ export class LearningModeService {
       queryBuilder
         .leftJoin('words.category', 'category')
         .where('category.categoryName IN (:...categories)', {
-          categories: categories.map(
-            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
-          ),
+          categories: categories.map((c) => capitalizeFirstLetter(c)),
         });
     }
 
@@ -74,7 +73,8 @@ export class LearningModeService {
 
     console.log('Selected word:', word?.engMeaning);
     if (!word) {
-      throw new Error('No words available for learning mode.');
+      console.log('No words available for categories: ', categories);
+      throw new Error('No words available for current categories');
     }
 
     let prompt: string;
@@ -134,15 +134,7 @@ export class LearningModeService {
 
     const explanation = content.split('Explanation:')[1]?.trim();
 
-    // console.log('sentence:', sentence);
-    // console.log('Answer Options:', answerOptions);
-    // console.log('Right Answer:', rightAnswer);
-    // console.log('Explanation:', explanation);
-
     if (!sentence.length || !answerOptions.length || !rightAnswer.length) {
-      // return {
-      //   statusCode: 500,
-      // };
       throw new Error(
         'Failed to generate a valid question and answer from the model.',
       );
@@ -168,16 +160,15 @@ export class LearningModeService {
       queryBuilder
         .leftJoinAndSelect('words.category', 'category')
         .where('category.categoryName IN (:...categories)', {
-          categories: categories.map(
-            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
-          ),
+          categories: categories.map((c) => capitalizeFirstLetter(c)),
         });
     }
 
     const chosenWord = await queryBuilder.orderBy('RANDOM()').getOne();
 
     if (!chosenWord) {
-      throw new Error('No words available for learning mode.');
+      console.log('No words available for categories: ', categories);
+      throw new Error('No words available for current categories');
     }
 
     const engChosenWord = chosenWord.engMeaning;
@@ -191,7 +182,13 @@ export class LearningModeService {
       .getMany();
 
     if (words.length < 3) {
-      throw new Error('Not enough words available for learning mode.');
+      console.log(
+        'Not enough words available for categories to learn: ',
+        categories,
+      );
+      throw new Error(
+        'Not enough words available for current categories to learn.',
+      );
     }
 
     let vnWords = words.map((word) => word.vnMeaning);
@@ -223,16 +220,15 @@ export class LearningModeService {
       queryBuilder
         .leftJoinAndSelect('words.category', 'category')
         .where('category.categoryName IN (:...categories)', {
-          categories: categories.map(
-            (c) => c.charAt(0).toUpperCase() + c.slice(1).toLowerCase(),
-          ),
+          categories: categories.map((c) => capitalizeFirstLetter(c)),
         });
     }
 
     const chosenWord = await queryBuilder.orderBy('RANDOM()').getOne();
 
     if (!chosenWord) {
-      throw new Error('No words available for learning mode.');
+      console.log('No words available for categories: ', categories);
+      throw new Error('No words available for current categories');
     }
 
     const vnChosenWord = chosenWord.vnMeaning;
@@ -246,7 +242,8 @@ export class LearningModeService {
       .getMany();
 
     if (words.length < 3) {
-      throw new Error('Not enough words available for learning mode.');
+      console.log('No words available for categories: ', categories);
+      throw new Error('No words available for current categories');
     }
 
     let engWords = words.map((word) => word.engMeaning);
@@ -269,14 +266,24 @@ export class LearningModeService {
     };
   }
 
-  async completeWord(): Promise<ReturnQuestionAnswerDto> {
-    const word = await this.wordRepository
-      .createQueryBuilder('words')
-      .orderBy('RANDOM()')
-      .getOne();
+  async completeWord(categories?: string[]): Promise<ReturnQuestionAnswerDto> {
+    const queryBuilder = this.wordRepository.createQueryBuilder('words');
+
+    console.log('categories:', categories);
+
+    if (categories && categories.length > 0) {
+      queryBuilder
+        .leftJoinAndSelect('words.category', 'category')
+        .where('category.categoryName IN (:...categories)', {
+          categories: categories.map((c) => capitalizeFirstLetter(c)),
+        });
+    }
+
+    const word = await queryBuilder.orderBy('RANDOM()').getOne();
 
     if (!word) {
-      throw new Error('No words available for completion.');
+      console.log('No words available for categories: ', categories);
+      throw new Error('No words available for current categories');
     }
 
     word.engMeaning = word.engMeaning.toLowerCase();

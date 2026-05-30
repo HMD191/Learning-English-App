@@ -92,6 +92,9 @@ export class WordService {
     if (wordDto.category) {
       wordDto.category = capitalizeFirstLetter(wordDto.category);
     }
+    if (wordDto.synonyms) {
+      wordDto.synonyms = capitalizeFirstLetter(wordDto.synonyms);
+    }
 
     const existedWord = await this.wordRepository.findOne({
       where: { engMeaning: wordDto.engMeaning },
