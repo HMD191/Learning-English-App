@@ -2,27 +2,27 @@ import { QuestionAnswerDto } from './question-answer.dto';
 import { WordDto } from './word-manager.dto';
 
 class ReturnStringDto {
-  statusCode: number;
+  statusCode!: number;
   message?: string;
 }
 
 class ReturnWordsDto {
-  statusCode: number;
+  statusCode!: number;
   words?: WordDto[];
 }
 
 class ReturnWordDto {
-  statusCode: number;
+  statusCode!: number;
   word?: WordDto;
 }
 
 class ReturnQuestionAnswerDto {
-  statusCode: number;
+  statusCode!: number;
   questionAnswer?: QuestionAnswerDto;
 }
 
 class ReturnCategoryDto {
-  statusCode: number;
+  statusCode!: number;
   categories?: string[];
 }
 

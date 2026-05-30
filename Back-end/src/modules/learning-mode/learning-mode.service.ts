@@ -4,54 +4,20 @@ import { Words } from '@database/entities/word.entity';
 import { Repository } from 'typeorm';
 import { ReturnQuestionAnswerDto } from '@dtos/return-message.dto';
 import { Difficulty } from '@constants/constants';
-import { GoogleGenAI } from '@google/genai';
-import { ConfigService } from '@nestjs/config';
 import { capitalizeFirstLetter } from '@src/common/helper';
+import { ExternalAIModelService } from '../external-AI-model/external-AI-model.service';
+import {
+  getPromptMeaningChoice,
+  getPromptWordKindChoice,
+} from '../external-AI-model/external-AI-model.prompt';
 
 Injectable();
 export class LearningModeService {
-  private ai: GoogleGenAI;
   constructor(
     @InjectRepository(Words)
-    private wordRepository: Repository<Words>,
-    private readonly configService: ConfigService,
-  ) {
-    this.ai = new GoogleGenAI({
-      apiKey: process.env.GOOGLE_GENAI_API_KEY,
-    });
-  }
-
-  getPromptMeaningChoice(word: Words, difficulty: Difficulty): string {
-    return `Generate a sentence with a blank ("___" present for blank) and 4 random answer options, where the true answer to fill in the blank must be exactly the word "${word.engMeaning.toLowerCase()}". 
-    The sentence should be suitable for ${difficulty} level.
-    Generate an explanation in vietnamese for correct answer.
-    Follow the format below strictly:
-    Sentence: <sentence here>
-    a: <option 1>
-    b: <option 2>
-    c: <option 3>
-    d: <option 4>
-    RightAnswer: <correct option letter> (e.g., a, b, c, or d)
-    Explanation: <explanation for the correct answer in vietnamese>
-    `;
-  }
-
-  getPromptWordKindChoice(word: Words, difficulty: Difficulty): string {
-    return `Generate a sentence that includes a blank ("___") to be filled. Generate four random answer options to fill in the blank corresponding to 4 different kinds: a noun, a verb, an adjective, and an adverb which based on the word "${word.engMeaning.toLowerCase()}" (include original word).
-    The options must be different from each other in spelling and must not be labeled with their word kinds.
-    If cannot be generated enough valid words from the word "${word.engMeaning.toLowerCase()}", use unrelated words that fit the required parts of speech.
-    The sentence should be suitable for ${difficulty} level. 
-    Generate an explanation in vietnamese for correct answer.
-    Follow the format below strictly:
-    Sentence: <sentence here>
-    a: <option 1>
-    b: <option 2>
-    c: <option 3>
-    d: <option 4>
-    RightAnswer: <correct option letter> (e.g., a, b, c, or d)
-    Explanation: <explanation for the correct answer in vietnamese>
-    `;
-  }
+    private readonly wordRepository: Repository<Words>,
+    private readonly externalAIModelService: ExternalAIModelService,
+  ) {}
 
   async getFillInTheBlankQuestion(
     promptOption: 'meaning' | 'wordKind',
@@ -80,75 +46,20 @@ export class LearningModeService {
     let prompt: string;
     if (promptOption === 'meaning') {
       console.log('Using meaning choice prompt');
-      prompt = this.getPromptMeaningChoice(word, difficulty);
+      prompt = getPromptMeaningChoice(word.engMeaning, difficulty);
     } else {
       console.log('Using word kind choice prompt');
-      prompt = this.getPromptWordKindChoice(word, difficulty);
+      prompt = getPromptWordKindChoice(word.engMeaning, difficulty);
     }
 
     try {
-      const result = await this.getQuestionAndAnswerFromModel(prompt);
+      const result =
+        await this.externalAIModelService.getQuestionAndAnswerFromModel(prompt);
       return result;
     } catch (error) {
       console.error('Error getting question and answer from model:', error);
       throw new Error('Failed to get question and answer from model.');
     }
-  }
-
-  async getQuestionAndAnswerFromModel(
-    prompt: string,
-  ): Promise<ReturnQuestionAnswerDto> {
-    console.log('Requesting AI model for data');
-
-    const response = await this.ai.models.generateContent({
-      model:
-        this.configService.get<string>('GOOGLE_GENAI_MODEL') ||
-        'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        thinkingConfig: {
-          thinkingBudget: 0, // Disables thinking
-        },
-      },
-    });
-
-    const content: string = response.text ?? '';
-
-    console.log('AI response content:', content);
-
-    let sentence: string = '';
-    const answerOptions: string[] = [];
-    let rightAnswer: string = '';
-
-    content.split('\n').map((line: string) => {
-      line = line.trim();
-      if (line.startsWith('Sentence:')) {
-        sentence = line.replace('Sentence:', '').trim();
-      } else if (line.startsWith('RightAnswer:')) {
-        rightAnswer = line.replace('RightAnswer:', '').trim();
-      } else if (/^[a-d]:/.test(line) && answerOptions.length < 4) {
-        const option = line.split(':')[1].trim();
-        answerOptions.push(option);
-      }
-    });
-
-    const explanation = content.split('Explanation:')[1]?.trim();
-
-    if (!sentence.length || !answerOptions.length || !rightAnswer.length) {
-      throw new Error(
-        'Failed to generate a valid question and answer from the model.',
-      );
-    }
-
-    return {
-      statusCode: 200,
-      questionAnswer: {
-        sentence: sentence,
-        answerOptions: answerOptions,
-        rightAnswer: rightAnswer,
-        explanation: explanation,
-      },
-    };
   }
 
   async mutiChoiceEn2Vn(

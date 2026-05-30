@@ -17,7 +17,6 @@ import {
   ReturnWordsDto,
 } from '@dtos/return-message.dto';
 import { CategoryService } from '@src/modules/word-manager/category.service';
-import { WordKind } from '@src/constants/constants';
 
 @Controller()
 export class WordController {
@@ -29,6 +28,13 @@ export class WordController {
   @Post('words')
   async addWord(@Body() wordDto: WordDto): Promise<ReturnStringDto> {
     return await this.wordService.addWord(wordDto);
+  }
+
+  @Get('evaluate-word-difficulty')
+  async evaluateWordDifficulty(
+    @Query('word') word: string,
+  ): Promise<{ score: string }> {
+    return await this.wordService.getEvaluateWordDifficulty(word);
   }
 
   @Put('words')

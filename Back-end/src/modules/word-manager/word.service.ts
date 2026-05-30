@@ -10,6 +10,7 @@ import {
 } from '@dtos/return-message.dto';
 import { Categories } from '@database/entities/category.entity';
 import { capitalizeFirstLetter } from '@src/common/helper';
+import { ExternalAIModelService } from '../external-AI-model/external-AI-model.service';
 
 Injectable();
 export class WordService {
@@ -18,6 +19,7 @@ export class WordService {
     private wordRepository: Repository<Words>,
     @InjectRepository(Categories)
     private categoryRepository: Repository<Categories>,
+    private readonly externalAIModelService: ExternalAIModelService,
   ) {}
 
   async addWord(wordDto: WordDto): Promise<ReturnStringDto> {
@@ -46,11 +48,15 @@ export class WordService {
     }
 
     try {
+      const difficulty = await this.getEvaluateWordDifficulty(
+        wordDto.engMeaning,
+      );
       const wordToInsert: Partial<Words> = {
         engMeaning: wordDto.engMeaning,
         vnMeaning: wordDto.vnMeaning,
         wordKind: wordDto.wordKind,
         synonyms: wordDto.synonyms || null,
+        difficulty: parseInt(difficulty.score),
       };
 
       if (wordDto.category) {
@@ -81,6 +87,12 @@ export class WordService {
       console.error('Error adding word:', error);
       throw new InternalServerErrorException('Database save failed');
     }
+  }
+
+  async getEvaluateWordDifficulty(word: string): Promise<{ score: string }> {
+    return await this.externalAIModelService.getEvaluateWordDifficultyFromModel(
+      word,
+    );
   }
 
   async updateWord(wordDto: UpdateWordDto): Promise<ReturnStringDto> {
@@ -119,12 +131,16 @@ export class WordService {
     }
 
     try {
+      const difficulty = await this.getEvaluateWordDifficulty(
+        wordDto.newEngMeaning,
+      );
       const wordToUpdate: Partial<Words> = {
         engMeaning: wordDto.newEngMeaning,
         vnMeaning: wordDto.vnMeaning,
         wordKind: wordDto.wordKind,
         synonyms: wordDto.synonyms || null,
         lastUpdate: new Date(),
+        difficulty: parseInt(difficulty.score),
       };
 
       if (wordDto.category) {
@@ -176,6 +192,7 @@ export class WordService {
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
         synonyms: word.synonyms || null,
+        difficulty: word.difficulty,
       }));
 
       if (words.length === 0) {
@@ -217,6 +234,7 @@ export class WordService {
         wordKind: wordDb.wordKind,
         category: wordDb.category ? wordDb.category.categoryName : null,
         synonyms: wordDb.synonyms || null,
+        difficulty: wordDb.difficulty,
       };
 
       return {
@@ -250,6 +268,7 @@ export class WordService {
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
         synonyms: word.synonyms || null,
+        difficulty: word.difficulty,
       }));
 
       console.log(`Found ${words.length} words matching "${searchTerm}"`);
@@ -300,6 +319,7 @@ export class WordService {
         wordKind: word.wordKind,
         category: word.category ? word.category.categoryName : null,
         synonyms: word.synonyms || null,
+        difficulty: word.difficulty,
       }));
 
       console.log(`Found ${words.length} words matching the filter.`);
