@@ -31,6 +31,8 @@ class WordDto {
   synonyms: string | null | undefined;
 
   category: string | null | undefined;
+
+  difficulty?: number | null | undefined;
 }
 
 class UpdateWordDto extends WordDto {

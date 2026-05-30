@@ -1,7 +1,7 @@
 class QuestionAnswerDto {
-  sentence: string;
-  answerOptions: string[];
-  rightAnswer: string;
+  sentence!: string;
+  answerOptions!: string[];
+  rightAnswer!: string;
   explanation?: string;
 }
 

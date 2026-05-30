@@ -52,6 +52,13 @@ export class Words {
   synonyms!: string | null;
 
   @Column({
+    name: 'difficulty',
+    type: 'smallint',
+    default: 0,
+  })
+  difficulty!: number;
+
+  @Column({
     name: 'metadata',
     default: null,
     type: 'json',

@@ -5,9 +5,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateWordsAndCategories1778401988668
-  implements MigrationInterface
-{
+export class CreateWordsAndCategories1778401988668 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // enum cho word_kind
     await queryRunner.query(`
