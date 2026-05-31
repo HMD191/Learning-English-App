@@ -21,13 +21,13 @@ export default function RootLayout({
         />
       </head>
 
-      <body className="bg-background text-on-background min-h-screen flex overflow-hidden">
+      <body className="bg-background text-on-background min-h-dvh flex overflow-hidden">
         <SideNav />
 
-        <div className="flex-grow flex flex-col h-screen overflow-hidden">
+        <div className="flex-grow flex flex-col h-dvh overflow-hidden">
           <TopNav />
 
-          <main className="flex-grow overflow-y-auto px-gutter py-stack-sm lg:px-margin-desktop lg:py-stack-lg">
+          <main className="flex-grow overflow-y-auto px-gutter pt-stack-sm pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:px-margin-desktop lg:py-stack-lg">
             {children}
           </main>
         </div>
