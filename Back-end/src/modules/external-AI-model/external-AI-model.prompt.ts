@@ -1,5 +1,3 @@
-import { Difficulty, DifficultyLabel } from '@src/constants/constants';
-
 function getPromptEvaluateWordDifficulty(word: string): string {
   return `Evaluate the difficulty level of the word "${word.toLowerCase()}".
       Return ONLY a single integer from 1 to 5:
@@ -23,7 +21,7 @@ function getPromptEvaluateWordDifficulty(word: string): string {
 function getPromptMeaningChoice(word: string, difficulty: string): string {
   return `Generate a sentence with a blank ("___" present for blank) and 4 random answer options, where the true answer to fill in the blank must be exactly the word "${word.toLowerCase()}". 
     The sentence should be suitable for ${difficulty} level.
-    Generate an explanation in vietnamese for correct answer.
+    Generate an explanation in vietnamese for correct answer and why each of the other three options is incorrect.
     Follow the format below strictly:
     Sentence: <sentence here>
     a: <option 1>
@@ -40,7 +38,7 @@ function getPromptWordKindChoice(word: string, difficulty: string): string {
     The options must be different from each other in spelling and must not be labeled with their word kinds.
     If cannot be generated enough valid words from the word "${word.toLowerCase()}", use unrelated words that fit the required parts of speech.
     The sentence should be suitable for ${difficulty} level. 
-    Generate an explanation in vietnamese for correct answer.
+    Generate an explanation in Vietnamese for the correct answer and why each of the other three options is incorrect.
     Follow the format below strictly:
     Sentence: <sentence here>
     a: <option 1>
